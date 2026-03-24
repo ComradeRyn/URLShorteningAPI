@@ -27,6 +27,7 @@ public class ShortLinksService : IShortLinksService
                     HttpStatusCode.BadRequest, Messages.InvalidCustomAlias);
             }
 
+            // Edge case, what if the customAlias is the same as an existing shortCode?
             if (await _shortLinksRepository.GetByCustomAlias(request.CustomAlias) is not null)
             {
                 return new ApiResponse<ShortUrlResponse>(
@@ -40,14 +41,20 @@ public class ShortLinksService : IShortLinksService
 
         var urlTail = shortLink.CustomAlias ?? shortLink.ShortCode!;
 
-        return new ApiResponse<ShortUrlResponse>(
-            HttpStatusCode.OK,
-            new ShortUrlResponse($"https://tpt.link/{urlTail}"));
+        return new ApiResponse<ShortUrlResponse>(new ShortUrlResponse($"https://tpt.link/{urlTail}"));
     }
 
-    public Task<ApiResponse<string>> ResolveUrl(string shortAlias)
+    public async Task<ApiResponse<string>> ResolveUrl(string shortAlias)
     {
-        throw new NotImplementedException();
+        var shortLink = await _shortLinksRepository.GetByShortCode(shortAlias) ?? 
+                        await _shortLinksRepository.GetByCustomAlias(shortAlias);
+
+        if (shortLink is null)
+        {
+            return new ApiResponse<string>(HttpStatusCode.NotFound, Messages.LinkNotFound);
+        }
+
+        return new ApiResponse<string>(shortLink.LongUrl);
     }
 
     public ApiResponse<string> VerifyPassword(VerifyPasswordRequest request)
