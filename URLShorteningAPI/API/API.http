@@ -1,17 +1,21 @@
 @API_HostAddress = http://localhost:5048
 @Cute_Ducks = http://localhost:5048/api/shortlinks/cute-ducks
+@Google_Link = RHaeN
+@secret = secret-duck
 
 POST {{API_HostAddress}}/api/shortlinks
 Content-Type: application/json
 Accept: application/json
 
 {
-    "longurl": "https://google.com/"
+    "longurl": "https://www.heraldtribune.com/gcdn/authoring/2019/07/15/NSHT/ghows-LK-8d7dc7b6-0c5c-57fd-e053-0100007fc429-bea5063d.jpeg?crop=1836,2447,x489,y0",
+    "customalias": "secret-duck",
+    "password": "password"
 }
 
 ###
 
-GET {{API_HostAddress}}/api/shortlinks/RHaeN
+GET {{API_HostAddress}}/api/shortlinks/
 Content-Type: application/json
 
 ###

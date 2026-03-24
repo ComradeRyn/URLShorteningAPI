@@ -4,6 +4,7 @@ using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Constants;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
 
@@ -11,10 +12,12 @@ public class ShortLinksService : IShortLinksService
 {
     private const string CustomAliasRegexp = @"[\s\/]";
     private readonly IShortLinksRepository _shortLinksRepository;
+    private readonly IConfiguration _configuration;
 
-    public ShortLinksService(IShortLinksRepository shortLinksRepository)
+    public ShortLinksService(IShortLinksRepository shortLinksRepository, IConfiguration configuration)
     {
         _shortLinksRepository = shortLinksRepository;
+        _configuration = configuration;
     }
     
     public async Task<ApiResponse<ShortUrlResponse>> ShortenUrl(CreationRequest request)
@@ -52,6 +55,11 @@ public class ShortLinksService : IShortLinksService
         if (shortLink is null)
         {
             return new ApiResponse<string>(HttpStatusCode.NotFound, Messages.LinkNotFound);
+        }
+
+        if (shortLink.Password is not null)
+        {
+            return new ApiResponse<string>($"{_configuration["PasswordValidationWebpage"]}?{shortAlias}");
         }
 
         return new ApiResponse<string>(shortLink.LongUrl);
