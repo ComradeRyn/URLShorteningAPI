@@ -65,9 +65,17 @@ public class ShortLinksService : IShortLinksService
         return new ApiResponse<string>(shortLink.LongUrl);
     }
 
-    public ApiResponse<string> VerifyPassword(VerifyPasswordRequest request)
+    public async Task<ApiResponse<string>> VerifyPassword(VerifyPasswordRequest request)
     {
-        throw new NotImplementedException();
+        var shortLink = await _shortLinksRepository.GetByShortCode(request.ShortAlias) ?? 
+                        await _shortLinksRepository.GetByCustomAlias(request.ShortAlias);
+
+        if (request.Password != shortLink!.Password)
+        {
+            return new ApiResponse<string>(HttpStatusCode.Forbidden, Messages.IncorrectPassword);
+        }
+
+        return new ApiResponse<string>(shortLink.LongUrl);
     }
 
     private bool ValidateCustomAlias(string customAlias)
