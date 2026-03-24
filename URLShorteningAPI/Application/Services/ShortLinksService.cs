@@ -9,7 +9,7 @@ namespace Application.Services;
 
 public class ShortLinksService : IShortLinksService
 {
-    private const string CustomAliasRegexp = @"[^\s]+";
+    private const string CustomAliasRegexp = @"[^\s\/]+";
     private readonly IShortLinksRepository _shortLinksRepository;
 
     public ShortLinksService(IShortLinksRepository shortLinksRepository)
