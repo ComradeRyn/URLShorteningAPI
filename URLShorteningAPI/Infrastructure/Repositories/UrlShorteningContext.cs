@@ -11,7 +11,7 @@ public class UrlShorteningContext (DbContextOptions<UrlShorteningContext> option
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+    
         modelBuilder.Entity<ShortLink>()
             .Property(x => x.Id)
             .UseIdentityColumn(seed: 121, increment: 3);
