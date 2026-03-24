@@ -9,7 +9,7 @@ namespace Application.Services;
 
 public class ShortLinksService : IShortLinksService
 {
-    private const string CustomAliasRegexp = @"[^\s\/]+";
+    private const string CustomAliasRegexp = @"[\s\/]";
     private readonly IShortLinksRepository _shortLinksRepository;
 
     public ShortLinksService(IShortLinksRepository shortLinksRepository)
@@ -21,7 +21,7 @@ public class ShortLinksService : IShortLinksService
     {
         if (request.CustomAlias is not null)
         {
-            if (!ValidateCustomAlias(request.CustomAlias))
+            if (ValidateCustomAlias(request.CustomAlias))
             {
                 return new ApiResponse<ShortUrlResponse>(
                     HttpStatusCode.BadRequest, Messages.InvalidCustomAlias);
