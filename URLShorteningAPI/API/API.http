@@ -1,6 +1,13 @@
 @API_HostAddress = http://localhost:5048
 
-GET {{API_HostAddress}}/weatherforecast/
+POST {{API_HostAddress}}/api/shortlinks
+Content-Type: application/json
 Accept: application/json
+
+{
+    "longurl": "https://hips.hearstapps.com/hmg-prod/images/four-ducklings-on-grass-royalty-free-image-1732103736.jpg?crop=1xw:0.74982xh;center,top&resize=1200:*",
+    "customalias": "Protected-Ducks",
+    "password": "awesomePassword"
+}
 
 ###
