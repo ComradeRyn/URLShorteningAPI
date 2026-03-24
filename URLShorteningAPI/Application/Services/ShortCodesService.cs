@@ -15,6 +15,13 @@ public class ShortCodesService : IShortCodesService
     public string Encode(long id)
         => _sqids.Encode(id);
 
-    public long Decode(string shortCode)
-        => _sqids.Decode(shortCode)[0];
+    public long? Decode(string shortCode)
+    {
+        if (_sqids.Decode(shortCode) is [var singleNumber])
+        {
+            return singleNumber;
+        }
+
+        return null;
+    }
 }

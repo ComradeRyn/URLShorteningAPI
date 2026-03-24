@@ -3,5 +3,5 @@
 public interface IShortCodesService
 {
     string Encode(long id);
-    long Decode(string shortCode);
+    long? Decode(string shortCode);
 }
