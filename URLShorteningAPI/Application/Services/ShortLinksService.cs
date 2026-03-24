@@ -31,7 +31,8 @@ public class ShortLinksService : IShortLinksService
             }
 
             // Edge case, what if the customAlias is the same as an existing shortCode?
-            if (await _shortLinksRepository.GetByCustomAlias(request.CustomAlias) is not null)
+            if (await _shortLinksRepository.GetByCustomAlias(request.CustomAlias) is not null ||
+                await _shortLinksRepository.GetByShortCode(request.CustomAlias) is not null)
             {
                 return new ApiResponse<ShortUrlResponse>(
                     HttpStatusCode.BadRequest, Messages.CustomAliasTaken);
