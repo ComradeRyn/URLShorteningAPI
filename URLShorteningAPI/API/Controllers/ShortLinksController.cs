@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Requests;
+﻿using System.Net;
+using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ public class ShortLinksController : ControllerBase
         _shortLinksService = shortLinksService;
     }
     
-    // TODO: add comment documenting endpoint
+    // TODO: add comment documenting endpoints
     [HttpPost]
     [ProducesResponseType(typeof(ShortUrlResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -37,13 +38,29 @@ public class ShortLinksController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ResolveUrl(string shortAlias)
     {
-        // TODO: redirect to fake website
         var response = await _shortLinksService.ResolveUrl(shortAlias);
         if (!response.IsSuccess)
         {
             return BadRequest(response.ErrorMessage);
         }
         
+        return Redirect(response.Content!);
+    }
+
+    [HttpPost("verification")]
+    [ProducesResponseType(StatusCodes.Status302Found)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> VerifyPassword(VerifyPasswordRequest request)
+    {
+        var response = await _shortLinksService.VerifyPassword(request);
+        if (!response.IsSuccess)
+        {
+            // TODO: look into sending forbidden status code
+            // return Forbid(response.ErrorMessage); <- doesn't work
+            // return Forbid();
+            return StatusCode(StatusCodes.Status403Forbidden, response.ErrorMessage);
+        }
+
         return Redirect(response.Content!);
     }
 }

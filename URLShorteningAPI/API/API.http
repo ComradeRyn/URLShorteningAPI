@@ -19,3 +19,11 @@ GET {{API_HostAddress}}/api/shortlinks/
 Content-Type: application/json
 
 ###
+
+POST {{API_HostAddress}}/api/shortlinks/verification
+Content-Type: application/json
+
+{
+    "shortalias": "secret-duck",
+    "password": "wrongpassword"
+}
