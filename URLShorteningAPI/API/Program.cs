@@ -14,7 +14,10 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
 
-builder.Services.AddSingleton<SqidsEncoder<long>>();
+builder.Services.AddSingleton(new SqidsEncoder<long>(new SqidsOptions
+{
+    MinLength = 5,
+}));
 
 builder.Services.AddDbContext<UrlShorteningContext>(opt =>
     opt.UseSqlServer(
