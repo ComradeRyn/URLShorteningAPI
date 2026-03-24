@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Application.DTOs.Requests;
+﻿using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -56,8 +55,7 @@ public class ShortLinksController : ControllerBase
         if (!response.IsSuccess)
         {
             // TODO: look into sending forbidden status code
-            // return Forbid(response.ErrorMessage); <- doesn't work
-            // return Forbid();
+            // return Forbid(response.ErrorMessage); <- doesn't work, but seems more coherent
             return StatusCode(StatusCodes.Status403Forbidden, response.ErrorMessage);
         }
 
