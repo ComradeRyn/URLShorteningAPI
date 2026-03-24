@@ -12,12 +12,14 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
-
 builder.Services.AddSingleton(new SqidsEncoder<long>(new SqidsOptions
 {
     MinLength = 5,
 }));
+
+builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
+builder.Services.AddScoped<IShortLinksRepository, ShortLinksRepository>();
+builder.Services.AddScoped<IShortLinksService, ShortLinksService>();
 
 builder.Services.AddDbContext<UrlShorteningContext>(opt =>
     opt.UseSqlServer(

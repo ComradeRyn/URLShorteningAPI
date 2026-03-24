@@ -5,7 +5,7 @@ namespace Application.Interfaces;
 
 public interface IShortLinksService
 {
-    ApiResponse<ShortUrlResponse> ShortenUrl(CreationRequest request);
+    Task<ApiResponse<ShortUrlResponse>> ShortenUrl(CreationRequest request);
     ApiResponse<string> ResolveUrl(string shortAlias);
     ApiResponse<string> VerifyPassword(VerifyPasswordRequest request);
 }
