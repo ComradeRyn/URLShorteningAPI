@@ -1,5 +1,6 @@
 @API_HostAddress = http://localhost:5048
-@Cute_Ducks = http://localhost:5048/api/shortlinks/cute-ducks
+@Cute_Ducks = cute-ducks
+@Other_Duck_Code = MWEny
 @Google_Link = RHaeN
 @secret = secret-duck
 
@@ -8,14 +9,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "longurl": "https://www.heraldtribune.com/gcdn/authoring/2019/07/15/NSHT/ghows-LK-8d7dc7b6-0c5c-57fd-e053-0100007fc429-bea5063d.jpeg?crop=1836,2447,x489,y0",
-    "customalias": "secret-duck",
-    "password": "password"
+    "longurl": "https://hips.hearstapps.com/hmg-prod/images/call-duck-royalty-free-image-1732105274.jpg?crop=0.670xw:1.00xh;0.0138xw,0"
 }
 
 ###
 
-GET {{API_HostAddress}}/api/shortlinks/
+GET {{API_HostAddress}}/api/shortlinks/{{Other_Duck_Code}}
 Content-Type: application/json
 
 ###

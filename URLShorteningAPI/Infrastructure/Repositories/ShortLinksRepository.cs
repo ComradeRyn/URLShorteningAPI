@@ -44,7 +44,8 @@ public class ShortLinksRepository : IShortLinksRepository
         {
             LongUrl = longUrl,
             CustomAlias = customAlias,
-            Password = password
+            Password = password,
+            CreationDate = DateTime.Now
         };
 
         _context.ShortLinks.Add(shortLink);
