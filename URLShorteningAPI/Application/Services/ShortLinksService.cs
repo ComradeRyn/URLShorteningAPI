@@ -45,7 +45,7 @@ public class ShortLinksService : IShortLinksService
             new ShortUrlResponse($"https://tpt.link/{urlTail}"));
     }
 
-    public ApiResponse<string> ResolveUrl(string shortAlias)
+    public Task<ApiResponse<string>> ResolveUrl(string shortAlias)
     {
         throw new NotImplementedException();
     }
