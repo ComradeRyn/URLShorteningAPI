@@ -7,5 +7,5 @@ public interface IShortLinksService
 {
     Task<ApiResponse<ShortUrlResponse>> ShortenUrl(CreationRequest request);
     Task<ApiResponse<string>> ResolveUrl(string shortAlias);
-    ApiResponse<string> VerifyPassword(VerifyPasswordRequest request);
+    Task<ApiResponse<string>> VerifyPassword(VerifyPasswordRequest request);
 }
