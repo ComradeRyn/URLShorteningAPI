@@ -32,4 +32,20 @@ public class ShortLinksController : ControllerBase
 
         return Ok(response.Content);
     }
+
+    [HttpGet("{shortAlias}")]
+    [ProducesResponseType(StatusCodes.Status302Found)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ResolveUrl(string shortAlias)
+    {
+        // TODO: redirect to fake website
+        var response = await _shortLinksService.ResolveUrl(shortAlias);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response.ErrorMessage);
+        }
+
+        return Redirect(response.Content!);
+    }
 }
