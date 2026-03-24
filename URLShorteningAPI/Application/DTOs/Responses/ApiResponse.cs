@@ -15,9 +15,10 @@ public class ApiResponse<T>
         ErrorMessage = errorMessage;
     }
 
-    public ApiResponse(HttpStatusCode statusCode, T content)
+    // TODO: does not make much sense to always have it be OK, because there exists other accepting status codes
+    public ApiResponse(T content)
     {
-        StatusCode = statusCode;
+        StatusCode = HttpStatusCode.OK;
         Content = content;
     }
 }
