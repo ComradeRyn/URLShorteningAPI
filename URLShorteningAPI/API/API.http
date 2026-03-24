@@ -1,13 +1,17 @@
 @API_HostAddress = http://localhost:5048
+@Cute_Ducks = http://localhost:5048/api/shortlinks/cute-ducks
 
 POST {{API_HostAddress}}/api/shortlinks
 Content-Type: application/json
 Accept: application/json
 
 {
-    "longurl": "https://hips.hearstapps.com/hmg-prod/images/four-ducklings-on-grass-royalty-free-image-1732103736.jpg?crop=1xw:0.74982xh;center,top&resize=1200:*",
-    "customalias": "Protected-Ducks",
-    "password": "awesomePassword"
+    "longurl": "https://google.com/"
 }
+
+###
+
+GET {{API_HostAddress}}/api/shortlinks/RHaeN
+Content-Type: application/json
 
 ###

@@ -24,7 +24,6 @@ public class ShortLinksController : ControllerBase
     public async Task<ActionResult<ShortUrlResponse>> ShortenUrl(CreationRequest request)
     {
         var response = await _shortLinksService.ShortenUrl(request);
-
         if (!response.IsSuccess)
         {
             return BadRequest(response.ErrorMessage);
@@ -40,12 +39,11 @@ public class ShortLinksController : ControllerBase
     {
         // TODO: redirect to fake website
         var response = await _shortLinksService.ResolveUrl(shortAlias);
-
         if (!response.IsSuccess)
         {
             return BadRequest(response.ErrorMessage);
         }
-
+        
         return Redirect(response.Content!);
     }
 }
