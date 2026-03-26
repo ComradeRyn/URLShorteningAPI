@@ -19,9 +19,12 @@ builder.Services.AddSingleton(new SqidsEncoder<long>(new SqidsOptions
     MinLength = 5,
 }));
 
-builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
 builder.Services.AddScoped<IShortLinksRepository, ShortLinksRepository>();
+builder.Services.AddScoped<IVisitsRepository, VisitsRepository>();
+
+builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
 builder.Services.AddScoped<IShortLinksService, ShortLinksService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 builder.Services.AddDbContext<UrlShorteningContext>(opt =>
     opt.UseSqlServer(
