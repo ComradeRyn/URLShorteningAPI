@@ -4,7 +4,6 @@ using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Constants;
-using Domain.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
@@ -77,6 +76,7 @@ public class ShortLinksService : IShortLinksService
             return new ApiResponse<string>($"{_configuration["PasswordValidationWebpage"]}?{shortAlias}");
         }
 
+        // If they are redirected to the password site, should it be counted as a visit?
         await _visitsRepository.Add(shortLink);
         
         return new ApiResponse<string>(shortLink.LongUrl);
