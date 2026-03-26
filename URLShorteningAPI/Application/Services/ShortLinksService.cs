@@ -4,6 +4,7 @@ using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Constants;
+using Domain.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
@@ -70,7 +71,14 @@ public class ShortLinksService : IShortLinksService
         {
             return new ApiResponse<string>($"{_configuration["PasswordValidationWebpage"]}?{shortAlias}");
         }
-
+        
+        shortLink.Visits.Add(
+            new Visit
+            {
+                Date = DateTime.Now,
+                ShortLink = shortLink
+            });
+        
         return new ApiResponse<string>(shortLink.LongUrl);
     }
 
