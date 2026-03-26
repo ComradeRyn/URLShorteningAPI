@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -57,5 +58,22 @@ public class ShortLinksRepository : IShortLinksRepository
         }
 
         return shortLink;
+    }
+
+    public async Task<ShortLinkAnalyticsModel> GetAnalytics(
+        ShortLink shortLink,
+        DateTime startDate,
+        DateTime endDate)
+    {
+        var query = _context.Entry(shortLink)
+            .Collection(s => s.Visits)
+            .Query()
+            .Where(visit => visit.Date >= startDate && visit.Date <= endDate);
+
+        var totalVisits = await query.CountAsync();
+        // Question: should this be null, or another value?
+        DateTime? lastVisitedAt = totalVisits > 0 ? await query.MaxAsync(visit => visit.Date) : null;
+
+        return new ShortLinkAnalyticsModel(totalVisits, lastVisitedAt);
     }
 }

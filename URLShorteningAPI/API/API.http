@@ -29,5 +29,5 @@ Content-Type: application/json
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/{{Cute_Ducks}}?startDate=2005-01-01&endDate=2030-01-01
+GET {{API_HostAddress}}/api/analytics/4vSAO?startDate=2005-01-01&endDate=2030-01-01
 Content-Type: application/json

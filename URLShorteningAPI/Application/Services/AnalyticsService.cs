@@ -27,25 +27,17 @@ public class AnalyticsService : IAnalyticsService
             return new ApiResponse<ShortLinkAnalyticsResponse>(
                 HttpStatusCode.NotFound, Messages.LinkNotFound);
         }
-        
-        // Input format should be "yyyyMMdd"
-        var startDate = DateTime.Parse(request.StartDate);
-        var endDate = DateTime.Parse(request.EndDate);
 
-        var query = shortLink
-            .Visits
-            .AsQueryable()
-            .Where(visit => visit.Date >= startDate && visit.Date <= endDate);
-
-        // Question: what happens if the link was never visited?
-        var totalVisits = query.Count();
-        var lastVisitedAt = query.MaxBy(visit => visit.Date)?.Date;
+        var analytics = await _shortLinksRepository.GetAnalytics(
+            shortLink,
+            DateTime.Parse(request.StartDate),
+            DateTime.Parse(request.EndDate));
 
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
-                totalVisits,
+                analytics.TotalVisits,
                 shortLink.CreationDate,
-                lastVisitedAt));
+                analytics.LastVisitedAt));
     }
 
     public Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
