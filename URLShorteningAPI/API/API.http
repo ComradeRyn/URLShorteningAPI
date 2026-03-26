@@ -1,20 +1,38 @@
 @API_HostAddress = http://localhost:5048
-@Cute_Ducks = cute-ducks
-@Other_Duck_Code = MWEny
-@Google_Link = RHaeN
-@secret = secret-duck
+@cute_customAlias = cute-ducks
+@secret_customAlias = secret-duck
+
+@cute_shortCode = yioOr3
+@secret_shortCode = URsGLW
+
+@password = password
+
+
+
 
 POST {{API_HostAddress}}/api/shortlinks
 Content-Type: application/json
 Accept: application/json
 
 {
-    "longurl": "https://hips.hearstapps.com/hmg-prod/images/four-ducklings-on-grass-royalty-free-image-1732103736.jpg?crop=0.8891xw:1xh;center,top&resize=1200:*"
+    "longurl": "https://c8.alamy.com/comp/2AXN4W3/ugly-goose-head-closeup-2AXN4W3.jpg",
+    "customalias": "password-test",
+    "password": "p"
 }
 
 ###
 
-GET {{API_HostAddress}}/api/shortlinks/QXHlA
+GET {{API_HostAddress}}//api/shortlinks/test
+Content-Type: application/json
+
+###
+
+GET {{API_HostAddress}}/api/shortlinks/{{cute_customAlias}}
+Content-Type: application/json
+
+###
+
+GET {{API_HostAddress}}/api/shortlinks/{{cute_shortCode}}
 Content-Type: application/json
 
 ###
@@ -23,8 +41,29 @@ POST {{API_HostAddress}}/api/shortlinks/verification
 Content-Type: application/json
 
 {
-    "shortalias": "secret-duck",
-    "password": "wrongpassword"
+  "shortalias": "password-test",
+  "password": "p"
+}
+
+###
+
+POST {{API_HostAddress}}/api/shortlinks/verification
+Content-Type: application/json
+
+{
+    "shortalias": "{{secret_customAlias}}",
+    "password": "{{password}}"
+}
+
+###
+
+
+POST {{API_HostAddress}}/api/shortlinks/verification
+Content-Type: application/json
+
+{
+    "shortalias": "{{secret_shortCode}}",
+    "password": "{{password}}"
 }
 
 ###
