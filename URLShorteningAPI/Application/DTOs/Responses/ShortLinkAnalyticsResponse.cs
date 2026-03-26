@@ -3,4 +3,4 @@
 public record ShortLinkAnalyticsResponse(
     int TotalVisits,
     DateTime CreatedAt,
-    DateTime LastVisitedAt);
+    DateTime? LastVisitedAt);
