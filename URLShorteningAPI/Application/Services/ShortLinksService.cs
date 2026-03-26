@@ -13,12 +13,17 @@ public class ShortLinksService : IShortLinksService
 {
     private const string CustomAliasRegexp = @"[\s\/\\]";
     private readonly IShortLinksRepository _shortLinksRepository;
+    private readonly IVisitsRepository _visitsRepository;
     private readonly IConfiguration _configuration;
 
-    public ShortLinksService(IShortLinksRepository shortLinksRepository, IConfiguration configuration)
+    public ShortLinksService(
+        IShortLinksRepository shortLinksRepository,
+        IConfiguration configuration,
+        IVisitsRepository visitsRepository)
     {
         _shortLinksRepository = shortLinksRepository;
         _configuration = configuration;
+        _visitsRepository = visitsRepository;
     }
     
     public async Task<ApiResponse<ShortUrlResponse>> ShortenUrl(CreationRequest request)
@@ -71,13 +76,8 @@ public class ShortLinksService : IShortLinksService
         {
             return new ApiResponse<string>($"{_configuration["PasswordValidationWebpage"]}?{shortAlias}");
         }
-        
-        shortLink.Visits.Add(
-            new Visit
-            {
-                Date = DateTime.Now,
-                ShortLink = shortLink
-            });
+
+        await _visitsRepository.Add(shortLink);
         
         return new ApiResponse<string>(shortLink.LongUrl);
     }
