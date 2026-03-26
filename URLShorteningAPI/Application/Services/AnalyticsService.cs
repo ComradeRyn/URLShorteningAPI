@@ -40,8 +40,17 @@ public class AnalyticsService : IAnalyticsService
                 analytics.LastVisitedAt));
     }
 
-    public Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
+    public async Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
     {
-        throw new NotImplementedException();
+        var startDate = DateTime.Parse(request.StartDate);
+        var endDate = DateTime.Parse(request.EndDate);
+        
+        var visitAnalytics = await _visitsRepository.GetAnalytics(startDate, endDate);
+        var totalShortLinksCreated = await _shortLinksRepository.GetCount(startDate, endDate);
+
+        return new ApiResponse<VisitAnalyticsResponse>(new VisitAnalyticsResponse(
+                totalShortLinksCreated,
+                visitAnalytics.TotalVisits,
+                visitAnalytics.TopFiveUrls));
     }
 }

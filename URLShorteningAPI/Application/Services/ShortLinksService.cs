@@ -75,8 +75,7 @@ public class ShortLinksService : IShortLinksService
         {
             return new ApiResponse<string>($"{_configuration["PasswordValidationWebpage"]}?{shortAlias}");
         }
-
-        // If they are redirected to the password site, should it be counted as a visit?
+        
         await _visitsRepository.Add(shortLink);
         
         return new ApiResponse<string>(shortLink.LongUrl);
@@ -92,6 +91,8 @@ public class ShortLinksService : IShortLinksService
             return new ApiResponse<string>(HttpStatusCode.Forbidden, Messages.IncorrectPassword);
         }
 
+        await _visitsRepository.Add(shortLink);
+        
         return new ApiResponse<string>(shortLink.LongUrl);
     }
 

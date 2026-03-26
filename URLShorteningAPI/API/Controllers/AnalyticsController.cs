@@ -43,6 +43,8 @@ public class AnalyticsController : ControllerBase
     [ProducesResponseType(typeof(VisitAnalyticsResponse), StatusCodes.Status200OK)]
     public async Task<ActionResult<VisitAnalyticsResponse>> GetVisits(string startDate, string endDate)
     {
-        throw new NotImplementedException();
+        var response = await _analyticsService.GetVisits(new VisitAnalyticsRequest(startDate, endDate));
+
+        return response.Content!;
     }
 }

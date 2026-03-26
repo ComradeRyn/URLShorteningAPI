@@ -14,13 +14,6 @@ public class VisitsRepository : IVisitsRepository
         _context = context;
     }
 
-    // TODO: come up with a better name
-    public async Task<int> GetFromShortLinkCount(ShortLink shortLink)
-         => await _context.Entry(shortLink)
-            .Collection(s => s.Visits)
-            .Query()
-            .CountAsync();
-
     public async Task<Visit> Add(ShortLink parent)
     {
         var visit = new Visit
@@ -44,8 +37,9 @@ public class VisitsRepository : IVisitsRepository
 
         var topFiveUrls = query
             .GroupBy(visit => visit.ShortLink)
-            .OrderBy(group => group.Count())
+            .OrderByDescending(group => group.Count())
             .Select(group => group.Key.LongUrl)
+            .Take(5)
             .AsEnumerable();
 
         return new VisitsAnalyticsModel(topFiveUrls, count);

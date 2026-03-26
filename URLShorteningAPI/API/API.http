@@ -37,6 +37,16 @@ Content-Type: application/json
 
 ###
 
+GET {{API_HostAddress}}/api/shortlinks/{{secret_customAlias}}
+Content-Type: application/json
+
+###
+
+GET {{API_HostAddress}}/api/shortlinks/{{secret_shortCode}}
+Content-Type: application/json
+
+###
+
 POST {{API_HostAddress}}/api/shortlinks/verification
 Content-Type: application/json
 
@@ -70,3 +80,7 @@ Content-Type: application/json
 
 GET {{API_HostAddress}}/api/analytics/4vSAO?startDate=2005-01-01&endDate=2030-01-01
 Content-Type: application/json
+
+###
+
+GET {{API_HostAddress}}/api/analytics/visits?startDate=2000-01-01&endDate=2030-01-01
