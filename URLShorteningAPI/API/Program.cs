@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(new SqidsEncoder<long>(new SqidsOptions
 {
-    MinLength = 5,
+    MinLength = 6,
 }));
 
 builder.Services.AddScoped<IShortLinksRepository, ShortLinksRepository>();
