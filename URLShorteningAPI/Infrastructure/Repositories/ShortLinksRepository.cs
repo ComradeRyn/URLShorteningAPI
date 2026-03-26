@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using System.Collections.ObjectModel;
+using Application.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,18 +17,14 @@ public class ShortLinksRepository : IShortLinksRepository
     }
     
     public async Task<int> GetCount(DateTime startDate, DateTime endDate)
-    {
-        var query = _context.ShortLinks as IQueryable<ShortLink>;
-
-        return await query
+        => await _context.ShortLinks
             .Where(link => link.CreationDate >= startDate && link.CreationDate <= endDate)
             .CountAsync();
-    }
 
     public async Task<ShortLink?> GetByShortCode(string shortCode)
     {
         var accountId = _shortCodesService.Decode(shortCode);
-        if (accountId == null)
+        if (accountId is null)
         {
             return null;
         }
@@ -36,11 +33,8 @@ public class ShortLinksRepository : IShortLinksRepository
     }
 
     public async Task<ShortLink?> GetByCustomAlias(string customAlias)
-    {
-        var query = _context.ShortLinks as IQueryable<ShortLink>;
-
-        return await query.FirstOrDefaultAsync(shortLink => shortLink.CustomAlias == customAlias);
-    }
+        => await _context.ShortLinks
+            .FirstOrDefaultAsync(shortLink => shortLink.CustomAlias == customAlias);
 
     public async Task<ShortLink> Add(string longUrl, string? customAlias, string? password)
     {
@@ -49,7 +43,8 @@ public class ShortLinksRepository : IShortLinksRepository
             LongUrl = longUrl,
             CustomAlias = customAlias,
             Password = password,
-            CreationDate = DateTime.Now
+            CreationDate = DateTime.Now,
+            Visits = new Collection<Visit>()
         };
 
         _context.ShortLinks.Add(shortLink);

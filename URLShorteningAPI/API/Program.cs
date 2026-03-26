@@ -26,9 +26,8 @@ builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
 builder.Services.AddScoped<IShortLinksService, ShortLinksService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
-builder.Services.AddDbContext<UrlShorteningContext>(opt =>
-    opt.UseSqlServer(
-        builder.Configuration.GetConnectionString("UrlShorteningContext")));
+builder.Services.AddDbContext<UrlShorteningContext>(opt
+    => opt.UseSqlServer(builder.Configuration.GetConnectionString("UrlShorteningContext")));
 
 var app = builder.Build();
 

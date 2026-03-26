@@ -9,12 +9,12 @@ namespace Application.Services;
 public class AnalyticsService : IAnalyticsService
 {
     private readonly IShortLinksRepository _shortLinksRepository;
-    private readonly IAnalyticsService _analyticsService;
+    private readonly IVisitsRepository _visitsRepository;
 
-    public AnalyticsService(IShortLinksRepository shortLinksRepository, IAnalyticsService analyticsService)
+    public AnalyticsService(IShortLinksRepository shortLinksRepository, IVisitsRepository visitsRepository)
     {
         _shortLinksRepository = shortLinksRepository;
-        _analyticsService = analyticsService;
+        _visitsRepository = visitsRepository;
     }
     
     public async Task<ApiResponse<ShortLinkAnalyticsResponse>> GetShortLink(ShortLinkAnalyticsRequest request)
@@ -28,7 +28,7 @@ public class AnalyticsService : IAnalyticsService
                 HttpStatusCode.NotFound, Messages.LinkNotFound);
         }
         
-        // Input format should be "yyyyMMddHH"
+        // Input format should be "yyyyMMdd"
         var startDate = DateTime.Parse(request.StartDate);
         var endDate = DateTime.Parse(request.EndDate);
 

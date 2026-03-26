@@ -10,7 +10,7 @@ namespace API.Controllers;
 // [Authorize]
 public class AnalyticsController : ControllerBase
 {
-    private IAnalyticsService _analyticsService;
+    private readonly IAnalyticsService _analyticsService;
 
     public AnalyticsController(IAnalyticsService analyticsService)
     {
