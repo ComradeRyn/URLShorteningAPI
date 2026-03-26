@@ -8,5 +8,5 @@ public class ShortLink
     public string? CustomAlias { get; init; }
     public string? Password { get; init; }
     public DateTime CreationDate { get; init; }
-    public ICollection<Visit> Visits { get; init; }
+    public required ICollection<Visit> Visits { get; init; }
 }

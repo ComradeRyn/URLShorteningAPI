@@ -9,13 +9,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "longurl": "https://hips.hearstapps.com/hmg-prod/images/call-duck-royalty-free-image-1732105274.jpg?crop=0.670xw:1.00xh;0.0138xw,0",
-    "customalias": "MWEny"
+    "longurl": "https://hips.hearstapps.com/hmg-prod/images/four-ducklings-on-grass-royalty-free-image-1732103736.jpg?crop=0.8891xw:1xh;center,top&resize=1200:*"
 }
 
 ###
 
-GET {{API_HostAddress}}/api/shortlinks/{{Other_Duck_Code}}
+GET {{API_HostAddress}}/api/shortlinks/QXHlA
 Content-Type: application/json
 
 ###
@@ -27,3 +26,8 @@ Content-Type: application/json
     "shortalias": "secret-duck",
     "password": "wrongpassword"
 }
+
+###
+
+GET {{API_HostAddress}}/api/analytics/{{Cute_Ducks}}?startDate=2005-01-01&endDate=2030-01-01
+Content-Type: application/json
