@@ -17,7 +17,11 @@ public class ShortLinksRepository : IShortLinksRepository
     
     public async Task<int> GetCount(DateTime startDate, DateTime endDate)
     {
-        throw new NotImplementedException();
+        var query = _context.ShortLinks as IQueryable<ShortLink>;
+
+        return await query
+            .Where(link => link.CreationDate >= startDate && link.CreationDate <= endDate)
+            .CountAsync();
     }
 
     public async Task<ShortLink?> GetByShortCode(string shortCode)
