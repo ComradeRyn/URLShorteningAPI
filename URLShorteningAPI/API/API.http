@@ -9,7 +9,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "longurl": "https://hips.hearstapps.com/hmg-prod/images/call-duck-royalty-free-image-1732105274.jpg?crop=0.670xw:1.00xh;0.0138xw,0"
+    "longurl": "https://hips.hearstapps.com/hmg-prod/images/call-duck-royalty-free-image-1732105274.jpg?crop=0.670xw:1.00xh;0.0138xw,0",
+    "customalias": "MWEny"
 }
 
 ###

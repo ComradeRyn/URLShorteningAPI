@@ -15,6 +15,7 @@ public class ShortCodesService : IShortCodesService
     public string Encode(long id)
         => _sqids.Encode(id);
 
+    // TODO: possibly change this into TryDecode
     public long? Decode(string shortCode)
     {
         if (_sqids.Decode(shortCode) is [var singleNumber])

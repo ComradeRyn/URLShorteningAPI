@@ -31,6 +31,7 @@ public class ShortLinksService : IShortLinksService
             }
 
             // Edge case, what if the customAlias is the same as an existing shortCode?
+            // Question: do we need to concern ourselves with the validity of the inputted long url?
             if (await _shortLinksRepository.GetByCustomAlias(request.CustomAlias) is not null ||
                 await _shortLinksRepository.GetByShortCode(request.CustomAlias) is not null)
             {
@@ -39,7 +40,14 @@ public class ShortLinksService : IShortLinksService
             }
         }
 
-        var shortLink = await _shortLinksRepository.Add(request.LongUrl,
+        // TODO: ask if this is necessary
+        var longUrl = request.LongUrl;
+        if (!longUrl.StartsWith("http"))
+        {
+            longUrl = "http://" + longUrl;
+        }
+
+        var shortLink = await _shortLinksRepository.Add(longUrl,
             request.CustomAlias,
             request.Password);
 
