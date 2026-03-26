@@ -1,13 +1,14 @@
 ﻿using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [Route("api/shortlinks")]
 [ApiController]
-// [Authorize]
+[Authorize]
 public class ShortLinksController : ControllerBase
 {
     private readonly IShortLinksService _shortLinksService;
@@ -32,6 +33,7 @@ public class ShortLinksController : ControllerBase
         return Ok(response.Content);
     }
 
+    [AllowAnonymous]
     [HttpGet("{shortAlias}")]
     [ProducesResponseType(StatusCodes.Status302Found)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]

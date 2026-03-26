@@ -1,13 +1,14 @@
 ﻿using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [Route("api/analytics")]
 [ApiController]
-// [Authorize]
+[Authorize]
 public class AnalyticsController : ControllerBase
 {
     private readonly IAnalyticsService _analyticsService;

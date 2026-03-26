@@ -7,17 +7,13 @@
 
 @password = password
 
-
-
-
 POST {{API_HostAddress}}/api/shortlinks
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 {
-    "longurl": "https://c8.alamy.com/comp/2AXN4W3/ugly-goose-head-closeup-2AXN4W3.jpg",
-    "customalias": "password-test",
-    "password": "p"
+    "longurl": "google.com"
 }
 
 ###
@@ -49,6 +45,7 @@ Content-Type: application/json
 
 POST {{API_HostAddress}}/api/shortlinks/verification
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
   "shortalias": "password-test",
@@ -59,6 +56,7 @@ Content-Type: application/json
 
 POST {{API_HostAddress}}/api/shortlinks/verification
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "shortalias": "{{secret_customAlias}}",
@@ -70,6 +68,7 @@ Content-Type: application/json
 
 POST {{API_HostAddress}}/api/shortlinks/verification
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "shortalias": "{{secret_shortCode}}",
@@ -80,7 +79,20 @@ Content-Type: application/json
 
 GET {{API_HostAddress}}/api/analytics/4vSAO?startDate=2005-01-01&endDate=2030-01-01
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 ###
 
 GET {{API_HostAddress}}/api/analytics/visits?startDate=2000-01-01&endDate=2030-01-01
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+# @name create 
+GET http://{{API_HostAddress}}/api/authentication
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.global.set("auth_token", response.body.token)
+%}

@@ -1,7 +1,9 @@
 using Application.Interfaces;
 using Application.Services;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Sqids;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,9 +27,21 @@ builder.Services.AddScoped<IVisitsRepository, VisitsRepository>();
 builder.Services.AddScoped<IShortCodesService, ShortCodesService>();
 builder.Services.AddScoped<IShortLinksService, ShortLinksService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddDbContext<UrlShorteningContext>(opt
     => opt.UseSqlServer(builder.Configuration.GetConnectionString("UrlShorteningContext")));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwtOptions =>
+{
+    jwtOptions.Audience = builder.Configuration["Authentication:Audience"];
+    jwtOptions.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Authentication:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Convert.FromBase64String(builder.Configuration["Authentication:SecretForKey"]!))
+    };
+});
 
 var app = builder.Build();
 
@@ -40,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
