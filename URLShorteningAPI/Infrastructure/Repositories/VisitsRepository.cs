@@ -18,7 +18,7 @@ public class VisitsRepository : IVisitsRepository
     {
         var visit = new Visit
         {
-            Date = DateTime.Now,
+            Date = DateTime.UtcNow,
             ShortLink = parent
         };
 
@@ -30,8 +30,8 @@ public class VisitsRepository : IVisitsRepository
     
     public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime startDate, DateTime endDate)
     {
-        var query = _context.Visits as IQueryable<Visit>;
-        query = query.Where(visit => visit.Date >= startDate && visit.Date < endDate);
+        var query = _context.Visits
+            .Where(visit => visit.Date >= startDate && visit.Date < endDate);
         
         var count = await query.CountAsync();
 

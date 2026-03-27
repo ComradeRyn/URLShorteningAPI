@@ -44,7 +44,7 @@ public class ShortLinksRepository : IShortLinksRepository
             LongUrl = longUrl,
             CustomAlias = customAlias,
             Password = password,
-            CreationDate = DateTime.Now,
+            CreationDate = DateTime.UtcNow,
             Visits = new Collection<Visit>()
         };
 

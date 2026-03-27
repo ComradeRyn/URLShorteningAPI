@@ -17,8 +17,8 @@ public class ShortLinksService : IShortLinksService
 
     public ShortLinksService(
         IShortLinksRepository shortLinksRepository,
-        IConfiguration configuration,
-        IVisitsRepository visitsRepository)
+        IVisitsRepository visitsRepository,
+        IConfiguration configuration)
     {
         _shortLinksRepository = shortLinksRepository;
         _configuration = configuration;
