@@ -43,7 +43,7 @@ public class AnalyticsController : ControllerBase
 
         if (!response.IsSuccess)
         {
-            return StatusCode((int)response.StatusCode, response.ErrorMessage);
+            return StatusCode((int)response.ErrorCode, response.ErrorMessage);
         }
 
         return Ok(response.Content);
@@ -64,7 +64,7 @@ public class AnalyticsController : ControllerBase
         var response = await _analyticsService.GetVisits(new VisitAnalyticsRequest(startDate, endDate));
         if (!response.IsSuccess)
         {
-            return StatusCode((int)response.StatusCode, response.ErrorMessage);
+            return StatusCode((int)response.ErrorCode, response.ErrorMessage);
         }
 
         return response.Content!;
