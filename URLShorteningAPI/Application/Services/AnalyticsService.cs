@@ -31,7 +31,7 @@ public class AnalyticsService : IAnalyticsService
         var analytics = await _shortLinksRepository.GetAnalytics(
             shortLink,
             DateTime.Parse(request.StartDate),
-            DateTime.Parse(request.EndDate));
+            DateTime.Parse(request.EndDate).AddDays(1));
 
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
@@ -43,7 +43,7 @@ public class AnalyticsService : IAnalyticsService
     public async Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
     {
         var startDate = DateTime.Parse(request.StartDate);
-        var endDate = DateTime.Parse(request.EndDate);
+        var endDate = DateTime.Parse(request.EndDate).AddDays(1);
         
         var visitAnalytics = await _visitsRepository.GetAnalytics(startDate, endDate);
         var totalShortLinksCreated = await _shortLinksRepository.GetCount(startDate, endDate);

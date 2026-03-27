@@ -19,7 +19,7 @@ public class ShortLinksRepository : IShortLinksRepository
     
     public async Task<int> GetCount(DateTime startDate, DateTime endDate)
         => await _context.ShortLinks
-            .Where(link => link.CreationDate >= startDate && link.CreationDate <= endDate)
+            .Where(link => link.CreationDate >= startDate && link.CreationDate < endDate)
             .CountAsync();
 
     public async Task<ShortLink?> GetByShortCode(string shortCode)
@@ -68,7 +68,7 @@ public class ShortLinksRepository : IShortLinksRepository
         var query = _context.Entry(shortLink)
             .Collection(s => s.Visits)
             .Query()
-            .Where(visit => visit.Date >= startDate && visit.Date <= endDate);
+            .Where(visit => visit.Date >= startDate && visit.Date < endDate);
 
         var totalVisits = await query.CountAsync();
         // Question: should this be null, or another value?

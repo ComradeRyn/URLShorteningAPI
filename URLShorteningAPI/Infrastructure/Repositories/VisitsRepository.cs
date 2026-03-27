@@ -31,7 +31,7 @@ public class VisitsRepository : IVisitsRepository
     public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime startDate, DateTime endDate)
     {
         var query = _context.Visits as IQueryable<Visit>;
-        query = query.Where(visit => visit.Date >= startDate && visit.Date <= endDate);
+        query = query.Where(visit => visit.Date >= startDate && visit.Date < endDate);
         
         var count = await query.CountAsync();
 
