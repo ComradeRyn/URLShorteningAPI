@@ -18,6 +18,14 @@ public class AnalyticsController : ControllerBase
         _analyticsService = analyticsService;
     }
 
+    // TODO: figure out specific date format
+    /// <summary>
+    /// Provides analytics on a requested ShortLink within a specified date range
+    /// </summary>
+    /// <param name="shortAlias">The short code or custom alias</param>
+    /// <param name="startDate">The beginning of the date range</param>
+    /// <param name="endDate">The ending of the date range</param>
+    /// <returns>The total visits, creation date, and latest visit date</returns>
     [HttpGet("{shortAlias}")]
     [ProducesResponseType(typeof(ShortLinkAnalyticsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -40,6 +48,13 @@ public class AnalyticsController : ControllerBase
         return Ok(response.Content);
     }
 
+    /// <summary>
+    /// Provides analytics on all visits within a specified date range
+    /// </summary>
+    /// <param name="startDate">The beginning of the date range</param>
+    /// <param name="endDate">The ending of the date range</param>
+    /// <returns>The total number of ShortLinks that were created, the total number of visits that have
+    /// occured, and the top five Urls</returns>
     [HttpGet("visits")]
     [ProducesResponseType(typeof(VisitAnalyticsResponse), StatusCodes.Status200OK)]
     public async Task<ActionResult<VisitAnalyticsResponse>> GetVisits(string startDate, string endDate)
