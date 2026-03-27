@@ -43,7 +43,7 @@ public class AnalyticsController : ControllerBase
 
         if (!response.IsSuccess)
         {
-            return NotFound(response.ErrorMessage);
+            return StatusCode((int)response.StatusCode, response.ErrorMessage);
         }
 
         return Ok(response.Content);
@@ -62,6 +62,10 @@ public class AnalyticsController : ControllerBase
     public async Task<ActionResult<VisitAnalyticsResponse>> GetVisits(string startDate, string endDate)
     {
         var response = await _analyticsService.GetVisits(new VisitAnalyticsRequest(startDate, endDate));
+        if (!response.IsSuccess)
+        {
+            return StatusCode((int)response.StatusCode, response.ErrorMessage);
+        }
 
         return response.Content!;
     }

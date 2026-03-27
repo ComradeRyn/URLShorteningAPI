@@ -38,7 +38,7 @@ public class VisitsRepository : IVisitsRepository
         var topFiveUrls = query
             .GroupBy(visit => visit.ShortLink)
             .OrderByDescending(group => group.Count())
-            .Select(group => group.Key.LongUrl)
+            .Select(group => $"https://tpt.link/{group.Key.CustomAlias ?? group.Key.ShortCode!}")
             .Take(5)
             .AsEnumerable();
 

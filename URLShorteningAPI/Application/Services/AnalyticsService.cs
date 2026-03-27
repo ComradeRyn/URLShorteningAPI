@@ -62,6 +62,7 @@ public class AnalyticsService : IAnalyticsService
         var visitAnalytics = await _visitsRepository.GetAnalytics(
             startDate.ToUniversalTime(),
             endDate.AddDays(1).ToUniversalTime());
+        
         var totalShortLinksCreated = await _shortLinksRepository.GetCount(
             startDate.ToUniversalTime(),
             endDate.AddDays(1).ToUniversalTime());
@@ -72,7 +73,7 @@ public class AnalyticsService : IAnalyticsService
                 visitAnalytics.TopFiveUrls));
     }
 
-    private bool TryParseDate(string inputDate,out DateTime parsedDate)
+    private static bool TryParseDate(string inputDate,out DateTime parsedDate)
         => DateTime.TryParseExact(
             inputDate,
             ValidFormat,

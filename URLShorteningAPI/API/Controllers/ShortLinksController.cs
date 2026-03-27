@@ -32,7 +32,7 @@ public class ShortLinksController : ControllerBase
         var response = await _shortLinksService.ShortenUrl(request);
         if (!response.IsSuccess)
         {
-            return BadRequest(response.ErrorMessage);
+            return StatusCode((int)response.StatusCode, response.ErrorMessage);
         }
 
         return Ok(response.Content);
@@ -53,7 +53,7 @@ public class ShortLinksController : ControllerBase
         var response = await _shortLinksService.ResolveUrl(shortAlias);
         if (!response.IsSuccess)
         {
-            return BadRequest(response.ErrorMessage);
+            return StatusCode((int)response.StatusCode, response.ErrorMessage);
         }
         
         return Redirect(response.Content!);
@@ -72,9 +72,7 @@ public class ShortLinksController : ControllerBase
         var response = await _shortLinksService.VerifyPassword(request);
         if (!response.IsSuccess)
         {
-            // TODO: look into sending forbidden status code
-            // return Forbid(response.ErrorMessage); <- doesn't work, but seems more coherent
-            return StatusCode(StatusCodes.Status403Forbidden, response.ErrorMessage);
+            return StatusCode((int)response.StatusCode, response.ErrorMessage);
         }
 
         return Redirect(response.Content!);
