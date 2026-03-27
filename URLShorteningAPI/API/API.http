@@ -18,7 +18,7 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
-GET {{API_HostAddress}}//api/shortlinks/test
+GET {{API_HostAddress}}//api/shortlinks/kqHiKT
 Content-Type: application/json
 
 ###
@@ -77,13 +77,13 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/4vSAO?startDate=2005-01-01&endDate=2030-01-01
+GET {{API_HostAddress}}/api/analytics/cute-ducks?startDate=2026-03-20&endDate=2026-03-28
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/visits?startDate=2000-01-01&endDate=2030-01-01
+GET {{API_HostAddress}}/api/analytics/visits?startDate=2026-03-27&endDate=2026-03-27
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
