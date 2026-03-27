@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
@@ -8,6 +9,7 @@ namespace Application.Services;
 
 public class AnalyticsService : IAnalyticsService
 {
+    private const string ValidFormat = "yyyy-MM-dd";
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
 
@@ -27,11 +29,18 @@ public class AnalyticsService : IAnalyticsService
             return new ApiResponse<ShortLinkAnalyticsResponse>(
                 HttpStatusCode.NotFound, Messages.LinkNotFound);
         }
+        
+        if (!TryParseDate(request.StartDate, out var startDate)
+            || !TryParseDate(request.EndDate, out var endDate))
+        {
+            return new ApiResponse<ShortLinkAnalyticsResponse>(
+                HttpStatusCode.BadRequest, Messages.InvalidDateFormat);
+        }
 
         var analytics = await _shortLinksRepository.GetAnalytics(
             shortLink,
-            DateTime.Parse(request.StartDate).ToUniversalTime(),
-            DateTime.Parse(request.EndDate).AddDays(1).ToUniversalTime());
+            startDate.ToUniversalTime(),
+            endDate.AddDays(1).ToUniversalTime());
 
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
@@ -42,15 +51,32 @@ public class AnalyticsService : IAnalyticsService
 
     public async Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
     {
-        var startDate = DateTime.Parse(request.StartDate).ToUniversalTime();
-        var endDate = DateTime.Parse(request.EndDate).AddDays(1).ToUniversalTime();
+        if (!TryParseDate(request.StartDate, out var startDate)
+            || !TryParseDate(request.EndDate, out var endDate))
+        {
+            return new ApiResponse<VisitAnalyticsResponse>(
+                HttpStatusCode.BadRequest, Messages.InvalidDateFormat);
+        }
         
-        var visitAnalytics = await _visitsRepository.GetAnalytics(startDate, endDate);
-        var totalShortLinksCreated = await _shortLinksRepository.GetCount(startDate, endDate);
+        // TODO: Ask about this, and see if there is a better wayy
+        var visitAnalytics = await _visitsRepository.GetAnalytics(
+            startDate.ToUniversalTime(),
+            endDate.AddDays(1).ToUniversalTime());
+        var totalShortLinksCreated = await _shortLinksRepository.GetCount(
+            startDate.ToUniversalTime(),
+            endDate.AddDays(1).ToUniversalTime());
 
         return new ApiResponse<VisitAnalyticsResponse>(new VisitAnalyticsResponse(
                 totalShortLinksCreated,
                 visitAnalytics.TotalVisits,
                 visitAnalytics.TopFiveUrls));
     }
+
+    private bool TryParseDate(string inputDate,out DateTime parsedDate)
+        => DateTime.TryParseExact(
+            inputDate,
+            ValidFormat,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out parsedDate);
 }
