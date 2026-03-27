@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Responses;
-using Application.Services;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,9 +8,9 @@ namespace API.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly AuthenticationService _authenticationService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticationController(AuthenticationService authenticationService)
+        public AuthenticationController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
