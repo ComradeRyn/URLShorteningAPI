@@ -19,7 +19,7 @@ public class ShortLinksController : ControllerBase
     }
     
     /// <summary>
-    /// Takes a long url and returns a shortened version
+    /// Shortens a complete URL
     /// </summary>
     /// <param name="request">A record containing a required LongUrl of the intended destination, along with
     /// an optional custom alias and password</param>
@@ -39,7 +39,7 @@ public class ShortLinksController : ControllerBase
     }
 
     /// <summary>
-    /// Redirects to the requested short alias's referenced webpage
+    /// Redirects to the requested short alias's referenced URL
     /// </summary>
     /// <param name="shortAlias">A string of either an auto-generated shortcode or a user requested custom alias</param>
     /// <returns>A redirection to the requested URL or verification site depending on if request required
