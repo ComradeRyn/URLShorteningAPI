@@ -18,7 +18,12 @@ public class ShortLinksController : ControllerBase
         _shortLinksService = shortLinksService;
     }
     
-    // TODO: add comment documenting endpoints
+    /// <summary>
+    /// Takes a long url and returns a shortened version
+    /// </summary>
+    /// <param name="request">A record containing a required LongUrl of the intended destination, along with
+    /// an optional custom alias and password</param>
+    /// <returns>A shortened url ending with either the requested custom alias or an auto generated shortcode</returns>
     [HttpPost]
     [ProducesResponseType(typeof(ShortUrlResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -33,6 +38,12 @@ public class ShortLinksController : ControllerBase
         return Ok(response.Content);
     }
 
+    /// <summary>
+    /// Redirects to the requested short alias's referenced webpage
+    /// </summary>
+    /// <param name="shortAlias">A string of either an auto-generated shortcode or a user requested custom alias</param>
+    /// <returns>A redirection to the requested URL or verification site depending on if request required
+    /// a password</returns>
     [AllowAnonymous]
     [HttpGet("{shortAlias}")]
     [ProducesResponseType(StatusCodes.Status302Found)]
@@ -48,6 +59,11 @@ public class ShortLinksController : ControllerBase
         return Redirect(response.Content!);
     }
 
+    /// <summary>
+    /// Verifies an inputted password for a specified ShortLink
+    /// </summary>
+    /// <param name="request">A record containing a short alias and password</param>
+    /// <returns>A redirection to the requested URL</returns>
     [HttpPost("verification")]
     [ProducesResponseType(StatusCodes.Status302Found)]
     [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
