@@ -73,7 +73,8 @@ public class ShortLinksService : IShortLinksService
 
         if (shortLink.Password is not null)
         {
-            return new ApiResponse<string>($"{_configuration["PasswordValidationWebpage"]}?{shortAlias}");
+            return new ApiResponse<string>(
+                $"{_configuration["PasswordValidationWebpage"]}?shortAlias={shortAlias}");
         }
         
         await _visitsRepository.Add(shortLink);

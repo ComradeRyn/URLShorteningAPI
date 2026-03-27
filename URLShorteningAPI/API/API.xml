@@ -4,11 +4,52 @@
         <name>API</name>
     </assembly>
     <members>
+        <member name="M:API.Controllers.AnalyticsController.GetShortLink(System.String,System.String,System.String)">
+            <summary>
+            Provides analytics on a requested ShortLink within a specified date range
+            </summary>
+            <param name="shortAlias">The short code or custom alias</param>
+            <param name="startDate">The beginning of the date range</param>
+            <param name="endDate">The ending of the date range</param>
+            <returns>The total visits, creation date, and latest visit date</returns>
+        </member>
+        <member name="M:API.Controllers.AnalyticsController.GetVisits(System.String,System.String)">
+            <summary>
+            Provides analytics on all visits within a specified date range
+            </summary>
+            <param name="startDate">The beginning of the date range</param>
+            <param name="endDate">The ending of the date range</param>
+            <returns>The total number of ShortLinks that were created, the total number of visits that have
+            occured, and the top five Urls</returns>
+        </member>
         <member name="M:API.Controllers.AuthenticationController.GetAuthenticationToken">
             <summary>
             Creates a JWT
             </summary>
             <returns>A JWT allowing access to Accounts controller</returns>
+        </member>
+        <member name="M:API.Controllers.ShortLinksController.ShortenUrl(Application.DTOs.Requests.CreationRequest)">
+            <summary>
+            Shortens a complete URL
+            </summary>
+            <param name="request">A record containing a required LongUrl of the intended destination, along with
+            an optional custom alias and password</param>
+            <returns>A shortened url ending with either the requested custom alias or an auto generated shortcode</returns>
+        </member>
+        <member name="M:API.Controllers.ShortLinksController.ResolveUrl(System.String)">
+            <summary>
+            Redirects to the requested short alias's referenced URL
+            </summary>
+            <param name="shortAlias">A string of either an auto-generated shortcode or a user requested custom alias</param>
+            <returns>A redirection to the requested URL or verification site depending on if request required
+            a password</returns>
+        </member>
+        <member name="M:API.Controllers.ShortLinksController.VerifyPassword(Application.DTOs.Requests.VerifyPasswordRequest)">
+            <summary>
+            Verifies an inputted password for a specified ShortLink
+            </summary>
+            <param name="request">A record containing a short alias and password</param>
+            <returns>A redirection to the requested URL</returns>
         </member>
         <member name="T:Program">
             <summary>
