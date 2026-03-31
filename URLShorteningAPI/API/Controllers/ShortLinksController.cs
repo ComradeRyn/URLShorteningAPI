@@ -32,7 +32,7 @@ public class ShortLinksController : ControllerBase
         var response = await _shortLinksService.ShortenUrl(request);
         if (!response.IsSuccess)
         {
-            return StatusCode((int)response.ErrorCode, response.ErrorMessage);
+            return StatusCode((int)response.ErrorCode!, response.ErrorMessage);
         }
 
         return Ok(response.Content);
@@ -53,7 +53,7 @@ public class ShortLinksController : ControllerBase
         var response = await _shortLinksService.ResolveUrl(shortAlias);
         if (!response.IsSuccess)
         {
-            return StatusCode((int)response.ErrorCode, response.ErrorMessage);
+            return StatusCode((int)response.ErrorCode!, response.ErrorMessage);
         }
         
         return Redirect(response.Content!);
@@ -72,7 +72,7 @@ public class ShortLinksController : ControllerBase
         var response = await _shortLinksService.VerifyPassword(request);
         if (!response.IsSuccess)
         {
-            return StatusCode((int)response.ErrorCode, response.ErrorMessage);
+            return StatusCode((int)response.ErrorCode!, response.ErrorMessage);
         }
 
         return Redirect(response.Content!);
