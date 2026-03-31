@@ -31,8 +31,6 @@ public class VisitsRepository : IVisitsRepository
     
     public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime? startDate, DateTime? endDate)
     {
-        var visitsQuery = _context.Visits as IQueryable<Visit>;
-        
         Expression<Func<Visit, bool>>? filterDateRange = (startDate, endDate) switch
         {
             (null, null) => null,
@@ -40,7 +38,8 @@ public class VisitsRepository : IVisitsRepository
             (null, _) => visit => visit.Date < endDate,
             (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
         };
-
+        
+        var visitsQuery = _context.Visits.AsQueryable();
         if (filterDateRange is not null)
         {
             visitsQuery = visitsQuery.Where(filterDateRange);
