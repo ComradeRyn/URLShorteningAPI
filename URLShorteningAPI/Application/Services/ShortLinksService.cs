@@ -75,7 +75,7 @@ public class ShortLinksService : IShortLinksService
                 $"{_configuration["PasswordValidationWebpage"]}?shortAlias={shortAlias}");
         }
         
-        await _visitsRepository.Add(shortLink);
+        await _visitsRepository.Add(shortLink.Id);
         
         return new ApiResponse<string>(shortLink.LongUrl);
     }
@@ -90,7 +90,7 @@ public class ShortLinksService : IShortLinksService
             return new ApiResponse<string>(HttpStatusCode.Forbidden, Messages.IncorrectPassword);
         }
 
-        await _visitsRepository.Add(shortLink);
+        await _visitsRepository.Add(shortLink.Id);
         
         return new ApiResponse<string>(shortLink.LongUrl);
     }

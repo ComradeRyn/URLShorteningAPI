@@ -14,12 +14,12 @@ public class VisitsRepository : IVisitsRepository
         _context = context;
     }
     
-    public async Task<Visit> Add(ShortLink parent)
+    public async Task<Visit> Add(long parentId)
     {
         var visit = new Visit
         {
             Date = DateTime.UtcNow,
-            ShortLink = parent
+            ShortLinkId = parentId
         };
 
         _context.Visits.Add(visit);
@@ -30,16 +30,20 @@ public class VisitsRepository : IVisitsRepository
     
     public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime startDate, DateTime endDate)
     {
-        var query = _context.Visits
+        var visitsQuery = _context.Visits
             .Where(visit => visit.Date >= startDate && visit.Date < endDate);
         
-        var count = await query.CountAsync();
-
-        var topFiveUrls = query
-            .GroupBy(visit => visit.ShortLink)
+        var count = await visitsQuery.CountAsync();
+        
+        var topFiveIds = visitsQuery
+            .GroupBy(visit => visit.ShortLinkId)
             .OrderByDescending(group => group.Count())
-            .Select(group => $"https://tpt.link/{group.Key.CustomAlias ?? group.Key.ShortCode!}")
             .Take(5)
+            .Select(group => group.Key);
+        
+        var topFiveUrls =  _context.ShortLinks
+            .Where(shortLink => topFiveIds.Contains(shortLink.Id))
+            .Select(shortLink => $"https://tpt.link/{shortLink.CustomAlias ?? shortLink.ShortCode}")
             .AsEnumerable();
 
         return new VisitsAnalyticsModel(topFiveUrls, count);

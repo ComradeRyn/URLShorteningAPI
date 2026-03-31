@@ -34,8 +34,7 @@ public class ShortLinksRepository : IShortLinksRepository
     }
 
     public async Task<ShortLink?> GetByCustomAlias(string customAlias)
-        => await _context.ShortLinks
-            .FirstOrDefaultAsync(shortLink => shortLink.CustomAlias == customAlias);
+        => await _context.ShortLinks.FirstOrDefaultAsync(shortLink => shortLink.CustomAlias == customAlias);
 
     public async Task<ShortLink> Add(string longUrl, string? customAlias, string? password)
     {
@@ -71,7 +70,6 @@ public class ShortLinksRepository : IShortLinksRepository
             .Where(visit => visit.Date >= startDate && visit.Date < endDate);
 
         var totalVisits = await query.CountAsync();
-        // Question: should this be null, or another value?
         var lastVisitedAt = totalVisits > 0 
             ? await query.MaxAsync(visit => visit.Date) 
             : (DateTime?)null;
