@@ -17,8 +17,7 @@ public class AnalyticsController : ControllerBase
     {
         _analyticsService = analyticsService;
     }
-
-    // TODO: figure out specific date format
+    
     /// <summary>
     /// Provides analytics on a requested ShortLink within a specified date range
     /// </summary>
@@ -69,6 +68,6 @@ public class AnalyticsController : ControllerBase
             return StatusCode((int)response.ErrorCode!, response.ErrorMessage);
         }
 
-        return response.Content!;
+        return Ok(response.Content!);
     }
 }
