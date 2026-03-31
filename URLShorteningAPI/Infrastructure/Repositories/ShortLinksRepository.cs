@@ -28,7 +28,7 @@ public class ShortLinksRepository : IShortLinksRepository
             (_, _) => visit => visit.CreationDate >= startDate && visit.CreationDate < endDate
         };
 
-        var query = _context.ShortLinks as IQueryable<ShortLink>;
+        var query = _context.ShortLinks.AsQueryable();
         if (filterDateRange is not null)
         {
             query = query.Where(filterDateRange);
@@ -86,7 +86,6 @@ public class ShortLinksRepository : IShortLinksRepository
             (null, _) => visit => visit.Date < endDate,
             (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
         };
-
 
         var query = _context.Entry(shortLink)
             .Collection(s => s.Visits)
