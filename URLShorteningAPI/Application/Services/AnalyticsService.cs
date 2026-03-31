@@ -42,8 +42,8 @@ public class AnalyticsService : IAnalyticsService
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
                 analytics.TotalVisits,
-                shortLink.CreationDate.ToLocalTime(),
-                analytics.LastVisitedAt?.ToLocalTime()));
+                shortLink.CreationDate.ToLocalTime().ToString("s"),
+                analytics.LastVisitedAt?.ToLocalTime().ToString("s")));
     }
 
     public async Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
@@ -54,13 +54,8 @@ public class AnalyticsService : IAnalyticsService
                 HttpStatusCode.BadRequest, Messages.InvalidDateFormat);
         }
         
-        var visitAnalytics = await _visitsRepository.GetAnalytics(
-            startDate,
-            endDate?.AddDays(1));
-        
-        var totalShortLinksCreated = await _shortLinksRepository.GetCount(
-            startDate,
-            endDate?.AddDays(1));
+        var visitAnalytics = await _visitsRepository.GetAnalytics(startDate, endDate?.AddDays(1));
+        var totalShortLinksCreated = await _shortLinksRepository.GetCount(startDate, endDate?.AddDays(1));
 
         return new ApiResponse<VisitAnalyticsResponse>(new VisitAnalyticsResponse(
                 totalShortLinksCreated,
