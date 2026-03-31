@@ -13,7 +13,8 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "longurl": "google.com"
+    "longurl": "google.com",
+    "customalias": "NeUnzX"
 }
 
 ###
