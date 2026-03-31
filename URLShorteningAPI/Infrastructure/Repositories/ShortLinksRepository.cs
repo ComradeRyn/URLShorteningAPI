@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Models;
@@ -16,11 +17,25 @@ public class ShortLinksRepository : IShortLinksRepository
         _context = context;
         _shortCodesService = shortCodesService;
     }
-    
-    public async Task<int> GetCount(DateTime startDate, DateTime endDate)
-        => await _context.ShortLinks
-            .Where(link => link.CreationDate >= startDate && link.CreationDate < endDate)
-            .CountAsync();
+
+    public async Task<int> GetCount(DateTime? startDate, DateTime? endDate)
+    {
+        Expression<Func<ShortLink, bool>>? filterDateRange = (startDate, endDate) switch
+        {
+            (null, null) => null,
+            (_, null) => visit => visit.CreationDate >= startDate,
+            (null, _) => visit => visit.CreationDate <= endDate,
+            (_, _) => visit => visit.CreationDate >= startDate && visit.CreationDate < endDate
+        };
+
+        var query = _context.ShortLinks as IQueryable<ShortLink>;
+        if (filterDateRange is not null)
+        {
+            query = query.Where(filterDateRange);
+        }
+
+        return await query.CountAsync();
+    }
 
     public async Task<ShortLink?> GetByShortCode(string shortCode)
     {
@@ -61,14 +76,27 @@ public class ShortLinksRepository : IShortLinksRepository
 
     public async Task<ShortLinkAnalyticsModel> GetAnalytics(
         ShortLink shortLink,
-        DateTime startDate,
-        DateTime endDate)
+        DateTime? startDate,
+        DateTime? endDate)
     {
+        Expression<Func<Visit, bool>>? filterDateRange = (startDate, endDate) switch
+        {
+            (null, null) => null,
+            (_, null) => visit => visit.Date >= startDate,
+            (null, _) => visit => visit.Date <= endDate,
+            (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
+        };
+
+
         var query = _context.Entry(shortLink)
             .Collection(s => s.Visits)
-            .Query()
-            .Where(visit => visit.Date >= startDate && visit.Date < endDate);
+            .Query();
 
+        if (filterDateRange is not null)
+        {
+            query = query.Where(filterDateRange);
+        }
+        
         var totalVisits = await query.CountAsync();
         var lastVisitedAt = totalVisits > 0 
             ? await query.MaxAsync(visit => visit.Date) 

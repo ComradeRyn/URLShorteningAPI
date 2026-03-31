@@ -5,7 +5,7 @@ namespace Application.Interfaces;
 
 public interface IShortLinksRepository
 {
-    Task<int> GetCount(DateTime startDate, DateTime endDate);
+    Task<int> GetCount(DateTime? startDate, DateTime? endDate);
     Task<ShortLink?> GetByShortCode(string shortCode);
     Task<ShortLink?> GetByCustomAlias(string customAlias);
     Task<ShortLink> Add(
@@ -14,6 +14,6 @@ public interface IShortLinksRepository
         string? password);
     Task<ShortLinkAnalyticsModel> GetAnalytics(
         ShortLink shortLink,
-        DateTime startDate,
-        DateTime endDate);
+        DateTime? startDate,
+        DateTime? endDate);
 }

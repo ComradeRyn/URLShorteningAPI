@@ -2,5 +2,5 @@
 
 public record ShortLinkAnalyticsRequest(
     string ShortAlias,
-    string StartDate,
-    string EndDate);
+    string? StartDate,
+    string? EndDate);

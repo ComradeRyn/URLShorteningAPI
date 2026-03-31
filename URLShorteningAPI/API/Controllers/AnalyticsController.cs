@@ -32,8 +32,8 @@ public class AnalyticsController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ShortLinkAnalyticsResponse>> GetShortLink(
         string shortAlias,
-        string startDate,
-        string endDate)
+        string? startDate = null,
+        string? endDate = null)
     {
         var response = await _analyticsService.GetShortLink(
             new ShortLinkAnalyticsRequest(
@@ -59,7 +59,9 @@ public class AnalyticsController : ControllerBase
     [HttpGet("visits")]
     [ProducesResponseType(typeof(VisitAnalyticsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<VisitAnalyticsResponse>> GetVisits(string startDate, string endDate)
+    public async Task<ActionResult<VisitAnalyticsResponse>> GetVisits(
+        string? startDate = null,
+        string? endDate = null)
     {
         var response = await _analyticsService.GetVisits(new VisitAnalyticsRequest(startDate, endDate));
         if (!response.IsSuccess)

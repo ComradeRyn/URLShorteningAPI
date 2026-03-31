@@ -5,6 +5,6 @@ namespace Application.Interfaces;
 
 public interface IVisitsRepository
 {
-    Task<VisitsAnalyticsModel> GetAnalytics(DateTime startDate, DateTime endDate);
+    Task<VisitsAnalyticsModel> GetAnalytics(DateTime? startDate, DateTime? endDate);
     Task<Visit> Add(long parent);
 }

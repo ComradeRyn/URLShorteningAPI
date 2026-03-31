@@ -13,8 +13,7 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "longurl": "google.com",
-    "customalias": "NeUnzX"
+    "longurl": "httpgoogle.com"
 }
 
 ###
@@ -72,7 +71,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "shortalias": "{{secret_shortCode}}",
+    "shortalias": "Gbe6Uc",
     "password": "{{password}}"
 }
 

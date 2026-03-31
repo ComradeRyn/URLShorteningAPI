@@ -39,7 +39,7 @@ public class AnalyticsService : IAnalyticsService
         var analytics = await _shortLinksRepository.GetAnalytics(
             shortLink,
             startDate,
-            endDate.AddDays(1));
+            endDate?.AddDays(1));
 
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
@@ -58,11 +58,11 @@ public class AnalyticsService : IAnalyticsService
         
         var visitAnalytics = await _visitsRepository.GetAnalytics(
             startDate,
-            endDate.AddDays(1));
+            endDate?.AddDays(1));
         
         var totalShortLinksCreated = await _shortLinksRepository.GetCount(
             startDate,
-            endDate.AddDays(1));
+            endDate?.AddDays(1));
 
         return new ApiResponse<VisitAnalyticsResponse>(new VisitAnalyticsResponse(
                 totalShortLinksCreated,
@@ -70,11 +70,23 @@ public class AnalyticsService : IAnalyticsService
                 visitAnalytics.TopFiveUrls));
     }
 
-    private static bool TryParseDate(string inputDate, out DateTime parsedDate)
-        => DateTime.TryParseExact(
+    private static bool TryParseDate(string? inputDate, out DateTime? parsedDate)
+    {
+        if (inputDate is null)
+        {
+            parsedDate = null;
+            return true;
+        }
+
+        var isSuccess = DateTime.TryParseExact(
             inputDate,
             ValidFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.AdjustToUniversal,
-            out parsedDate);
+            out var parsedNonNullDate);
+
+         parsedDate = parsedNonNullDate;
+
+         return isSuccess;
+    }
 }

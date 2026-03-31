@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Responses;
+﻿using System.Linq.Expressions;
+using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +29,22 @@ public class VisitsRepository : IVisitsRepository
         return visit;
     }
     
-    public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime startDate, DateTime endDate)
+    public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime? startDate, DateTime? endDate)
     {
-        var visitsQuery = _context.Visits
-            .Where(visit => visit.Date >= startDate && visit.Date < endDate);
+        var visitsQuery = _context.Visits as IQueryable<Visit>;
+        
+        Expression<Func<Visit, bool>>? filterDateRange = (startDate, endDate) switch
+        {
+            (null, null) => null,
+            (_, null) => visit => visit.Date >= startDate,
+            (null, _) => visit => visit.Date <= endDate,
+            (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
+        };
+
+        if (filterDateRange is not null)
+        {
+            visitsQuery = visitsQuery.Where(filterDateRange);
+        }
         
         var count = await visitsQuery.CountAsync();
         
