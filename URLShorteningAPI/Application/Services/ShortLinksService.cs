@@ -10,7 +10,7 @@ namespace Application.Services;
 
 public class ShortLinksService : IShortLinksService
 {
-    private const string CustomAliasRegexp = @"^[^\s\/\\]*$";
+    private const string CustomAliasRegexp = @"^[\w\-_.~]*$";
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
     private readonly IConfiguration _configuration;
@@ -34,8 +34,7 @@ public class ShortLinksService : IShortLinksService
                 return new ApiResponse<ShortUrlResponse>(
                     HttpStatusCode.BadRequest, Messages.InvalidCustomAlias);
             }
-
-            // Edge case, what if the customAlias is the same as an existing shortCode?
+            
             // Question: do we need to concern ourselves with the validity of the inputted long url?
             if (await _shortLinksRepository.GetByCustomAlias(request.CustomAlias) is not null ||
                 await _shortLinksRepository.GetByShortCode(request.CustomAlias) is not null)
@@ -47,9 +46,9 @@ public class ShortLinksService : IShortLinksService
 
         // TODO: ask if this is necessary
         var longUrl = request.LongUrl;
-        if (!longUrl.StartsWith("http"))
+        if (!longUrl.StartsWith("http://") && !longUrl.StartsWith("https://") )
         {
-            longUrl = "http://" + longUrl;
+            longUrl = "https://" + longUrl;
         }
 
         var shortLink = await _shortLinksRepository.Add(longUrl,
