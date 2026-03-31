@@ -72,7 +72,9 @@ public class ShortLinksRepository : IShortLinksRepository
 
         var totalVisits = await query.CountAsync();
         // Question: should this be null, or another value?
-        DateTime? lastVisitedAt = totalVisits > 0 ? await query.MaxAsync(visit => visit.Date) : null;
+        var lastVisitedAt = totalVisits > 0 
+            ? await query.MaxAsync(visit => visit.Date) 
+            : (DateTime?)null;
 
         return new ShortLinkAnalyticsModel(totalVisits, lastVisitedAt);
     }
