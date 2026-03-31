@@ -10,7 +10,7 @@ namespace Application.Services;
 
 public class ShortLinksService : IShortLinksService
 {
-    private const string CustomAliasRegexp = @"[\s\/\\]";
+    private const string CustomAliasRegexp = @"^[^\s\/\\]*$";
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
     private readonly IConfiguration _configuration;
@@ -29,7 +29,7 @@ public class ShortLinksService : IShortLinksService
     {
         if (request.CustomAlias is not null)
         {
-            if (ContainsIllegalCharacters(request.CustomAlias))
+            if (!ValidateCustomAlias(request.CustomAlias))
             {
                 return new ApiResponse<ShortUrlResponse>(
                     HttpStatusCode.BadRequest, Messages.InvalidCustomAlias);
@@ -97,6 +97,6 @@ public class ShortLinksService : IShortLinksService
         return new ApiResponse<string>(shortLink.LongUrl);
     }
 
-    private static bool ContainsIllegalCharacters(string customAlias)
+    private static bool ValidateCustomAlias(string customAlias)
         => Regex.IsMatch(customAlias, CustomAliasRegexp);
 }
