@@ -24,7 +24,7 @@ public class ShortLinksRepository : IShortLinksRepository
         {
             (null, null) => null,
             (_, null) => visit => visit.CreationDate >= startDate,
-            (null, _) => visit => visit.CreationDate <= endDate,
+            (null, _) => visit => visit.CreationDate < endDate,
             (_, _) => visit => visit.CreationDate >= startDate && visit.CreationDate < endDate
         };
 
@@ -83,7 +83,7 @@ public class ShortLinksRepository : IShortLinksRepository
         {
             (null, null) => null,
             (_, null) => visit => visit.Date >= startDate,
-            (null, _) => visit => visit.Date <= endDate,
+            (null, _) => visit => visit.Date < endDate,
             (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
         };
 
