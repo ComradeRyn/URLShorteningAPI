@@ -35,8 +35,7 @@ public class ShortLinksService : IShortLinksService
                     HttpStatusCode.BadRequest, Messages.InvalidCustomAlias);
             }
             
-            if (await _shortLinksRepository.GetByCustomAlias(request.CustomAlias) is not null ||
-                await _shortLinksRepository.GetByShortCode(request.CustomAlias) is not null)
+            if (await _shortLinksRepository.Get(request.CustomAlias) is not null)
             {
                 return new ApiResponse<ShortUrlResponse>(
                     HttpStatusCode.BadRequest, Messages.CustomAliasTaken);
@@ -54,15 +53,13 @@ public class ShortLinksService : IShortLinksService
             request.CustomAlias,
             request.Password);
 
-        var urlTail = shortLink.CustomAlias ?? shortLink.ShortCode!;
-
-        return new ApiResponse<ShortUrlResponse>(new ShortUrlResponse($"https://tpt.link/{urlTail}"));
+        return new ApiResponse<ShortUrlResponse>(
+            new ShortUrlResponse($"https://tpt.link/{shortLink.CustomAlias ?? shortLink.ShortCode!}"));
     }
 
     public async Task<ApiResponse<string>> ResolveUrl(string shortAlias)
     {
-        var shortLink = await _shortLinksRepository.GetByShortCode(shortAlias) ?? 
-                        await _shortLinksRepository.GetByCustomAlias(shortAlias);
+        var shortLink = await _shortLinksRepository.Get(shortAlias);
 
         if (shortLink is null)
         {
@@ -82,8 +79,7 @@ public class ShortLinksService : IShortLinksService
 
     public async Task<ApiResponse<string>> VerifyPassword(VerifyPasswordRequest request)
     {
-        var shortLink = await _shortLinksRepository.GetByShortCode(request.ShortAlias) ?? 
-                        await _shortLinksRepository.GetByCustomAlias(request.ShortAlias);
+        var shortLink = await _shortLinksRepository.Get(request.ShortAlias);
 
         if (request.Password != shortLink!.Password)
         {

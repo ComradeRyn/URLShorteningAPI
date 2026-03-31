@@ -37,19 +37,16 @@ public class ShortLinksRepository : IShortLinksRepository
         return await query.CountAsync();
     }
 
-    public async Task<ShortLink?> GetByShortCode(string shortCode)
+    public async Task<ShortLink?> Get(string shortAlias)
     {
-        var accountId = _shortCodesService.Decode(shortCode);
-        if (accountId is null)
+        var accountId = _shortCodesService.Decode(shortAlias);
+        if (accountId is not null)
         {
-            return null;
+            return await _context.ShortLinks.FindAsync(accountId);
         }
 
-        return await _context.ShortLinks.FindAsync(accountId);
+        return await _context.ShortLinks.FirstOrDefaultAsync(shortLink => shortLink.CustomAlias == shortAlias);
     }
-
-    public async Task<ShortLink?> GetByCustomAlias(string customAlias)
-        => await _context.ShortLinks.FirstOrDefaultAsync(shortLink => shortLink.CustomAlias == customAlias);
 
     public async Task<ShortLink> Add(string longUrl, string? customAlias, string? password)
     {

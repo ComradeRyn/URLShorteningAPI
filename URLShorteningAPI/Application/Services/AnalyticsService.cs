@@ -21,9 +21,7 @@ public class AnalyticsService : IAnalyticsService
     
     public async Task<ApiResponse<ShortLinkAnalyticsResponse>> GetShortLink(ShortLinkAnalyticsRequest request)
     {
-        var shortLink = await _shortLinksRepository.GetByShortCode(request.ShortAlias) ?? 
-                        await _shortLinksRepository.GetByCustomAlias(request.ShortAlias);
-
+        var shortLink = await _shortLinksRepository.Get(request.ShortAlias);
         if (shortLink is null)
         {
             return new ApiResponse<ShortLinkAnalyticsResponse>(
