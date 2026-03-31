@@ -6,7 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services;
 
-// TODO: Left off at implementing authentication
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IConfiguration _configuration;
