@@ -9,7 +9,7 @@ namespace Application.Services;
 
 public class AnalyticsService : IAnalyticsService
 {
-    private const string ValidFormat = "yyyy-MM-dd";
+    private const string ValidDateFormat = "yyyy-MM-dd";
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
 
@@ -42,8 +42,8 @@ public class AnalyticsService : IAnalyticsService
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
                 analytics.TotalVisits,
-                shortLink.CreationDate.ToLocalTime().ToString("s"),
-                analytics.LastVisitedAt?.ToLocalTime().ToString("s")));
+                shortLink.CreationDate,
+                analytics.LastVisitedAt));
     }
 
     public async Task<ApiResponse<VisitAnalyticsResponse>> GetVisits(VisitAnalyticsRequest request)
@@ -73,7 +73,7 @@ public class AnalyticsService : IAnalyticsService
 
         var isSuccess = DateTime.TryParseExact(
             inputDate,
-            ValidFormat,
+            ValidDateFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.AdjustToUniversal,
             out var parsedNonNullDate);
