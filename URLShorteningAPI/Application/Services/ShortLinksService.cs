@@ -13,16 +13,19 @@ public class ShortLinksService : IShortLinksService
     private const string CustomAliasRegexp = @"^[\w\-_.~]*$";
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
+    private readonly IShortCodesService _shortCodesService;
     private readonly IConfiguration _configuration;
-
+    
     public ShortLinksService(
         IShortLinksRepository shortLinksRepository,
         IVisitsRepository visitsRepository,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IShortCodesService shortCodesService)
     {
         _shortLinksRepository = shortLinksRepository;
         _configuration = configuration;
         _visitsRepository = visitsRepository;
+        _shortCodesService = shortCodesService;
     }
     
     public async Task<ApiResponse<ShortUrlResponse>> ShortenUrl(CreationRequest request)
@@ -35,7 +38,8 @@ public class ShortLinksService : IShortLinksService
                     HttpStatusCode.BadRequest, Messages.InvalidCustomAlias);
             }
             
-            if (await _shortLinksRepository.Get(request.CustomAlias) is not null)
+            if (_shortCodesService.Decode(request.CustomAlias) is not null ||
+                await _shortLinksRepository.Get(request.CustomAlias) is not null)
             {
                 return new ApiResponse<ShortUrlResponse>(
                     HttpStatusCode.BadRequest, Messages.CustomAliasTaken);
@@ -60,7 +64,6 @@ public class ShortLinksService : IShortLinksService
     public async Task<ApiResponse<string>> ResolveUrl(string shortAlias)
     {
         var shortLink = await _shortLinksRepository.Get(shortAlias);
-
         if (shortLink is null)
         {
             return new ApiResponse<string>(HttpStatusCode.NotFound, Messages.LinkNotFound);
@@ -80,7 +83,6 @@ public class ShortLinksService : IShortLinksService
     public async Task<ApiResponse<string>> VerifyPassword(VerifyPasswordRequest request)
     {
         var shortLink = await _shortLinksRepository.Get(request.ShortAlias);
-
         if (request.Password != shortLink!.Password)
         {
             return new ApiResponse<string>(HttpStatusCode.Forbidden, Messages.IncorrectPassword);

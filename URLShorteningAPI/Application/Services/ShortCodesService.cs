@@ -17,7 +17,8 @@ public class ShortCodesService : IShortCodesService
     
     public long? Decode(string shortCode)
     {
-        if (_sqids.Decode(shortCode) is [var singleNumber])
+        if (_sqids.Decode(shortCode) is [var singleNumber] &&
+            shortCode == _sqids.Encode(singleNumber))
         {
             return singleNumber;
         }

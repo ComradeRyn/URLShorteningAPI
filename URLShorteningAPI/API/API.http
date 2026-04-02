@@ -13,7 +13,8 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "longurl": "httpgoogle.com"
+    "longurl": "https://github.com/ComradeRyn/Level5BankingAPI/blob/main/Level5BankingAPI/API/Middleware/ExceptionHandlingMiddleware.cs",
+    "password": "ryan"
 }
 
 ###
@@ -23,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-GET {{API_HostAddress}}/api/shortlinks/{{noPassword_customAlias}}
+GET {{API_HostAddress}}/api/shortlinks/Ax1Ls1
 Content-Type: application/json
 
 ###
@@ -71,13 +72,46 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "shortalias": "Gbe6Uc",
+    "shortalias": "g",
     "password": "{{password}}"
 }
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/secret-duck
+POST {{API_HostAddress}}/api/shortlinks/verification
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "shortalias": "googleTest",
+    "password": "{{password}}"
+}
+
+###
+
+POST {{API_HostAddress}}/api/shortlinks/verification
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "shortalias": "chessTest",
+    "password": "{{password}}"
+}
+
+###
+
+POST {{API_HostAddress}}/api/shortlinks/verification
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "shortalias": "9JXjFq",
+    "password": "ryan"
+}
+
+###
+
+GET {{API_HostAddress}}/api/analytics/secret-duck?startDate=2026-04-02&endDate=2026-04-02
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
