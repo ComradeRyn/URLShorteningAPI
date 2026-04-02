@@ -77,13 +77,13 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/cute-ducks?startDate=2026-03-20&endDate=2026-03-28
+GET {{API_HostAddress}}/api/analytics/secret-duck
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/visits?startDate=2026-03-27&endDate=2026-03-27
+GET {{API_HostAddress}}/api/analytics/visits
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 

@@ -31,22 +31,18 @@ public class VisitsRepository : IVisitsRepository
     
     public async Task<VisitsAnalyticsModel> GetAnalytics(DateTime? startDate, DateTime? endDate)
     {
-        Expression<Func<Visit, bool>>? filterDateRange = (startDate, endDate) switch
+        Expression<Func<Visit, bool>> filterDateRange = (startDate, endDate) switch
         {
-            (null, null) => null,
+            (null, null) => visit => true,
             (_, null) => visit => visit.Date >= startDate,
             (null, _) => visit => visit.Date < endDate,
             (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
         };
         
-        var visitsQuery = _context.Visits.AsQueryable();
-        if (filterDateRange is not null)
-        {
-            visitsQuery = visitsQuery.Where(filterDateRange);
-        }
+        var visitsQuery = _context.Visits.AsQueryable().Where(filterDateRange);
         
         var count = await visitsQuery.CountAsync();
-        
+
         var topFiveIds = visitsQuery
             .GroupBy(visit => visit.ShortLinkId)
             .OrderByDescending(group => group.Count())
