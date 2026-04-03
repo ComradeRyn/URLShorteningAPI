@@ -5,7 +5,7 @@ This Project is an API which shortens URLs into  concise Short Links.
 This API allows for:
 * Shortening of a URL into a unique Short Link, with the identifier being either auto generated or user defined.
 * Securing a Short Link behind a password, allowing access to the URL only if the correct password is provided.
-* Resolving a Short Link and redirecting to its destination.
+* Resolving a Short Link and redirecting to its referenced URL.
 * Fetching analytics on a specific Short Link within a given date range:
   * Included information:
     * Total number of visits
@@ -16,24 +16,6 @@ This API allows for:
     * Total number of Short Links created
     * Total number of visits
     * Top 5 visited URLs
-
-
-## Functionality
-This API allows for:
-* The shortening of a Url into a Short Link, with the identifier being either auto generated or user defined.
-* Securing a Short Link behind a password, allowing access to the Url only if the correct password is provided.
-* Resolving a Short Link and redirecting to its destination.
-* Fetch analytics on a specific Short Link within a given date range:
-  * Included information:
-    * Total number of visits
-    * Creation date
-    * Most recient visit date
-* Fetch analytics on all visits within a given date range:
-  * Included information:
-    * Total number short links created
-    * Total number of visits
-    * Top 5 visited Urls
-* The acquisition of an authentication token
 
 ## Usage
 While in developer mode, this API's endpoints can be interacted with through a swagger page, which can be found at
