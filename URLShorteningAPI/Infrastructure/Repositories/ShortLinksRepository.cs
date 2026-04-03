@@ -20,7 +20,7 @@ public class ShortLinksRepository : IShortLinksRepository
 
     public async Task<int> GetCount(DateTime? startDate, DateTime? endDate)
     {
-        Expression<Func<ShortLink, bool>> filterDateRange = (startDate, endDate) switch
+        Expression<Func<ShortLink, bool>> dateRangeFilter = (startDate, endDate) switch
         {
             (null, null) => shortLink => true,
             (_, null) => shortLink => shortLink.CreationDate >= startDate,
@@ -29,7 +29,7 @@ public class ShortLinksRepository : IShortLinksRepository
         };
 
         return await _context.ShortLinks
-            .Where(filterDateRange)
+            .Where(dateRangeFilter)
             .CountAsync();
     }
 
@@ -72,7 +72,7 @@ public class ShortLinksRepository : IShortLinksRepository
         DateTime? startDate,
         DateTime? endDate)
     {
-        Expression<Func<Visit, bool>> filterDateRange = (startDate, endDate) switch
+        Expression<Func<Visit, bool>> dateRangeFilter = (startDate, endDate) switch
         {
             (null, null) => visit => true,
             (_, null) => visit => visit.Date >= startDate,
@@ -83,7 +83,7 @@ public class ShortLinksRepository : IShortLinksRepository
         var query = _context.Entry(shortLink)
             .Collection(s => s.Visits)
             .Query()
-            .Where(filterDateRange);
+            .Where(dateRangeFilter);
         
         var totalVisits = await query.CountAsync();
         var lastVisitedAt = totalVisits > 0 
