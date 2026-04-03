@@ -3,16 +3,19 @@ using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Repositories;
 
 public class VisitsRepository : IVisitsRepository
 {
     private readonly UrlShorteningContext _context;
+    private readonly IConfiguration _configuration;
 
-    public VisitsRepository(UrlShorteningContext context)
+    public VisitsRepository(UrlShorteningContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
     }
     
     public async Task<Visit> Add(long parentId)
@@ -53,7 +56,7 @@ public class VisitsRepository : IVisitsRepository
         
         var topFiveUrls =  _context.ShortLinks
             .Where(shortLink => topFiveIds.Contains(shortLink.Id))
-            .Select(shortLink => $"https://tpt.link/{shortLink.CustomAlias ?? shortLink.ShortCode}")
+            .Select(shortLink => $"{_configuration["ShortLinkUrl"]}{shortLink.CustomAlias ?? shortLink.ShortCode}")
             .AsEnumerable();
 
         return new VisitsAnalyticsModel(topFiveUrls, count);

@@ -58,7 +58,7 @@ public class ShortLinksService : IShortLinksService
             request.Password);
 
         return new ApiResponse<ShortUrlResponse>(
-            new ShortUrlResponse($"https://tpt.link/{shortLink.CustomAlias ?? shortLink.ShortCode!}"));
+            new ShortUrlResponse($"{_configuration["ShortLinkUrl"]}{shortLink.CustomAlias ?? shortLink.ShortCode!}"));
     }
 
     public async Task<ApiResponse<string>> ResolveUrl(string shortAlias)
