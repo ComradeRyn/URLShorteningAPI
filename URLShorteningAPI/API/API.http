@@ -23,7 +23,7 @@ GET {{API_HostAddress}}//api/shortlinks/kqHiKT
 Content-Type: application/json
 
 ###
-
+#@no-redirect
 GET {{API_HostAddress}}/api/shortlinks/Ax1Ls1
 Content-Type: application/json
 
@@ -78,7 +78,8 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
-POST {{API_HostAddress}}/api/shortlinks/verification
+#@no-redirect
+POST {{API_HostAddress}}/api/shortlinks/verification HTTP/2
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -89,6 +90,7 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
+#@no-redirect
 POST {{API_HostAddress}}/api/shortlinks/verification
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}

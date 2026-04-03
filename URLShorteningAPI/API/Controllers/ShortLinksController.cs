@@ -1,10 +1,8 @@
-﻿using System.Text;
-using Application.DTOs.Requests;
+﻿using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace API.Controllers;
 
@@ -67,7 +65,7 @@ public class ShortLinksController : ControllerBase
     /// <param name="request">A record containing a short alias and password</param>
     /// <returns>A redirection to the requested URL</returns>
     [HttpPost("verification")]
-    [ProducesResponseType(StatusCodes.Status302Found)]
+    [ProducesResponseType(StatusCodes.Status303SeeOther)]
     [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> VerifyPassword(VerifyPasswordRequest request)
     {
@@ -76,7 +74,7 @@ public class ShortLinksController : ControllerBase
         {
             return StatusCode((int)response.ErrorCode!, response.ErrorMessage);
         }
-
+        
         return Redirect(response.Content!);
     }
 }
