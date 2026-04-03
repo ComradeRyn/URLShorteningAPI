@@ -4,6 +4,8 @@ using Application.DTOs.Requests;
 using Application.DTOs.Responses;
 using Application.Interfaces;
 using Domain.Constants;
+using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
@@ -14,18 +16,21 @@ public class ShortLinksService : IShortLinksService
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
     private readonly IShortCodesService _shortCodesService;
+    private readonly IPasswordHasher<ShortLink> _passwordHasher;
     private readonly IConfiguration _configuration;
     
     public ShortLinksService(
         IShortLinksRepository shortLinksRepository,
         IVisitsRepository visitsRepository,
         IConfiguration configuration,
-        IShortCodesService shortCodesService)
+        IShortCodesService shortCodesService,
+        IPasswordHasher<ShortLink> passwordHasher)
     {
         _shortLinksRepository = shortLinksRepository;
         _configuration = configuration;
         _visitsRepository = visitsRepository;
         _shortCodesService = shortCodesService;
+        _passwordHasher = passwordHasher;
     }
     
     public async Task<ApiResponse<ShortUrlResponse>> ShortenUrl(CreationRequest request)
@@ -52,10 +57,16 @@ public class ShortLinksService : IShortLinksService
             longUrl = "https://" + longUrl;
         }
 
+        var password = request.Password;
+        if (password is not null)
+        { 
+            password = _passwordHasher.HashPassword(null!, password);
+        }
+
         var shortLink = await _shortLinksRepository.Add(
             longUrl,
             request.CustomAlias,
-            request.Password);
+            password);
 
         return new ApiResponse<ShortUrlResponse>(
             new ShortUrlResponse($"{_configuration["ShortLinkUrl"]}{shortLink.CustomAlias ?? shortLink.ShortCode!}"));
@@ -83,7 +94,12 @@ public class ShortLinksService : IShortLinksService
     public async Task<ApiResponse<string>> VerifyPassword(VerifyPasswordRequest request)
     {
         var shortLink = await _shortLinksRepository.Get(request.ShortAlias);
-        if (request.Password != shortLink!.Password)
+        var verificationResult = _passwordHasher.VerifyHashedPassword(
+            null!,
+            shortLink!.Password!,
+            request.Password);
+        
+        if (verificationResult is PasswordVerificationResult.Failed) 
         {
             return new ApiResponse<string>(HttpStatusCode.Forbidden, Messages.IncorrectPassword);
         }

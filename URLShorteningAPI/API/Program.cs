@@ -1,8 +1,10 @@
 using System.Reflection;
 using Application.Interfaces;
 using Application.Services;
+using Domain.Models;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -39,6 +41,8 @@ builder.Services.AddSingleton(new SqidsEncoder<long>(new SqidsOptions
 {
     MinLength = 6,
 }));
+
+builder.Services.AddSingleton<IPasswordHasher<ShortLink>, PasswordHasher<ShortLink>>();
 
 builder.Services.AddScoped<IShortLinksRepository, ShortLinksRepository>();
 builder.Services.AddScoped<IVisitsRepository, VisitsRepository>();

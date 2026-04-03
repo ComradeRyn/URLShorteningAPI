@@ -107,7 +107,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "shortalias": "9JXjFq",
+    "shortalias": "82a1R0",
     "password": "ryan"
 }
 
