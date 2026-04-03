@@ -26,7 +26,7 @@ Every end point except for the resolution of a Short Link requires a JWT from th
 
 ## Hosting
 After cloning, the requirements to host this project are the following:
-* A SQL server, with the connection string stored in "UrlShorteningContext" variable within appsettings.json.
+* A SQL server with the connection string stored in "UrlShorteningContext" variable within appsettings.json.
 * A webpage which reads user input to validate password protected Short Links. This Url should be placed in
 the "PasswordValidationWebpage" variable in appsettings.json.
 
