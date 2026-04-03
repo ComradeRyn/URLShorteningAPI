@@ -65,7 +65,7 @@ public class ShortLinksController : ControllerBase
     /// <param name="request">A record containing a short alias and password</param>
     /// <returns>A redirection to the requested URL</returns>
     [HttpPost("verification")]
-    [ProducesResponseType(StatusCodes.Status303SeeOther)]
+    [ProducesResponseType(StatusCodes.Status302Found)]
     [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> VerifyPassword(VerifyPasswordRequest request)
     {
