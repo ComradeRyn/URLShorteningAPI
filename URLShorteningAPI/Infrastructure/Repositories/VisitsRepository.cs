@@ -38,8 +38,8 @@ public class VisitsRepository : IVisitsRepository
         {
             (null, null) => visit => true,
             (_, null) => visit => visit.Date >= startDate,
-            (null, _) => visit => visit.Date < endDate,
-            (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
+            (null, _) => visit => visit.Date <= endDate,
+            (_, _) => visit => visit.Date >= startDate && visit.Date <= endDate
         };
         
         var visitsQuery = _context.Visits

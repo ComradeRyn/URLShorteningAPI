@@ -6,5 +6,5 @@ public static class Messages
     public const string InvalidCustomAlias = "Requested custom alias contains illegal characters.";
     public const string IncorrectPassword = "Submitted password is incorrect.";
     public const string LinkNotFound = "Requested link does not exist.";
-    public const string InvalidDateFormat = "Dates must be in format of yyyy-MM-dd.";
+    public const string InvalidDateFormat = "Dates must be in format of yyyy-MM-dd-HH:mm.";
 }

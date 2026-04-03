@@ -9,7 +9,7 @@ namespace Application.Services;
 
 public class AnalyticsService : IAnalyticsService
 {
-    private const string ValidDateFormat = "yyyy-MM-dd";
+    private const string ValidDateFormat = "yyyy-MM-dd-HH:mm";
     private readonly IShortLinksRepository _shortLinksRepository;
     private readonly IVisitsRepository _visitsRepository;
 
@@ -37,7 +37,7 @@ public class AnalyticsService : IAnalyticsService
         var analytics = await _shortLinksRepository.GetAnalytics(
             shortLink,
             startDate,
-            endDate?.AddDays(1));
+            endDate);
 
         return new ApiResponse<ShortLinkAnalyticsResponse>(
             new ShortLinkAnalyticsResponse(
@@ -54,8 +54,8 @@ public class AnalyticsService : IAnalyticsService
                 HttpStatusCode.BadRequest, Messages.InvalidDateFormat);
         }
         
-        var visitAnalytics = await _visitsRepository.GetAnalytics(startDate, endDate?.AddDays(1));
-        var totalShortLinksCreated = await _shortLinksRepository.GetCount(startDate, endDate?.AddDays(1));
+        var visitAnalytics = await _visitsRepository.GetAnalytics(startDate, endDate);
+        var totalShortLinksCreated = await _shortLinksRepository.GetCount(startDate, endDate);
 
         return new ApiResponse<VisitAnalyticsResponse>(new VisitAnalyticsResponse(
                 totalShortLinksCreated,

@@ -24,8 +24,8 @@ public class ShortLinksRepository : IShortLinksRepository
         {
             (null, null) => shortLink => true,
             (_, null) => shortLink => shortLink.CreationDate >= startDate,
-            (null, _) => shortLink => shortLink.CreationDate < endDate,
-            (_, _) => shortLink => shortLink.CreationDate >= startDate && shortLink.CreationDate < endDate
+            (null, _) => shortLink => shortLink.CreationDate <= endDate,
+            (_, _) => shortLink => shortLink.CreationDate >= startDate && shortLink.CreationDate <= endDate
         };
 
         return await _context.ShortLinks
@@ -76,8 +76,8 @@ public class ShortLinksRepository : IShortLinksRepository
         {
             (null, null) => visit => true,
             (_, null) => visit => visit.Date >= startDate,
-            (null, _) => visit => visit.Date < endDate,
-            (_, _) => visit => visit.Date >= startDate && visit.Date < endDate
+            (null, _) => visit => visit.Date <= endDate,
+            (_, _) => visit => visit.Date >= startDate && visit.Date <= endDate
         };
 
         var query = _context.Entry(shortLink)
