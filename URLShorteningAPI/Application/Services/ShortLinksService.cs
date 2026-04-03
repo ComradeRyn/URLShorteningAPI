@@ -51,10 +51,10 @@ public class ShortLinksService : IShortLinksService
             }
         }
         
-        var longUrl = request.LongUrl;
-        if (!longUrl.StartsWith("http://") && !longUrl.StartsWith("https://") )
+        if (!request.LongUrl.StartsWith("http://") && !request.LongUrl.StartsWith("https://") )
         {
-            longUrl = "https://" + longUrl;
+            return new ApiResponse<ShortUrlResponse>(
+                HttpStatusCode.BadRequest, Messages.NoHttpHeader);
         }
 
         var password = request.Password;
@@ -64,7 +64,7 @@ public class ShortLinksService : IShortLinksService
         }
 
         var shortLink = await _shortLinksRepository.Add(
-            longUrl,
+            request.LongUrl,
             request.CustomAlias,
             password);
 
