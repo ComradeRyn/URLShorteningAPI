@@ -119,7 +119,7 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
-GET {{API_HostAddress}}/api/analytics/visits
+GET {{API_HostAddress}}/api/analytics/visits?startDate=2026-04-03
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 

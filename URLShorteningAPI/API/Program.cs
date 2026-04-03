@@ -10,10 +10,8 @@ using Sqids;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setupAction =>
@@ -23,7 +21,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     
     setupAction.IncludeXmlComments(xmlCommentsFullPath);
     
-    setupAction.AddSecurityDefinition("BankingApiBearerAuth", new OpenApiSecurityScheme()
+    setupAction.AddSecurityDefinition("UrlShorteningApiBearerAuth", new OpenApiSecurityScheme()
     {
         Type = SecuritySchemeType.Http,
         Scheme = "bearer",
@@ -33,7 +31,7 @@ builder.Services.AddSwaggerGen(setupAction =>
 
     setupAction.AddSecurityRequirement(document => new OpenApiSecurityRequirement()
     {
-        [new OpenApiSecuritySchemeReference("BankingApiBearerAuth", document)] = []
+        [new OpenApiSecuritySchemeReference("UrlShorteningApiBearerAuth", document)] = []
     });
 });
 
@@ -66,7 +64,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
